@@ -19,7 +19,9 @@
         android:id="@+id/scannerView"
         app:autoFocusButtonColor="@color/white"
         app:flashButtonColor="@color/white"
-        app:maskColor="@android:color/transparent">
+        app:maskColor="@android:color/transparent"
+        app:autoFocusButtonVisible="false"
+        app:flashButtonVisible="false">
 
     </com.budiyev.android.codescanner.CodeScannerView>
 

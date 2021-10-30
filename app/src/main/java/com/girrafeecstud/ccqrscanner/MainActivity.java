@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Camera;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,8 +20,14 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
 
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity {
 
+    //TODO увеличение/уменьшение зума камеры
+    //TODO кнопка вспышки на смартфоне
+    //TODO автофокус камеры - кнопка
+    //TODO - кнопка вопросика с краткой инфой о том, что надо сделать
     //TODO добавить повторный запрос разрешений на камеру (с помощью диалога)
     //TODO если человек нажал "больше не спрашивать", то отправить его в настройки самостоятельно включить доступ к камере" - диалог
 
@@ -28,14 +35,17 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView url;
 
-    private Camera camera;
+    private QuickResponseCodeURL quickResponseCodeURL;
     private CodeScanner codeScanner;
     private CodeScannerView codeScannerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        quickResponseCodeURL = new QuickResponseCodeURL();
 
         askCameraPermission();
 
@@ -50,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         Toast.makeText(MainActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
                         url.setText(result.getText());
-
+                        checkContent(result.getText());
                     }
                 });
             }
@@ -108,5 +118,19 @@ public class MainActivity extends AppCompatActivity {
     // procedure to request for camera permission
     private void requestCameraPermission(){
         ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
+    }
+
+    private void checkContent(String str){
+
+        if (!quickResponseCodeURL.isURL(str)) {
+            Toast.makeText(this, "QR does not contain URL", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else
+            Toast.makeText(this, "QR contains URL", Toast.LENGTH_SHORT).show();
+
+        String a = quickResponseCodeURL.isValidURL(str);
+        Toast.makeText(this, a, Toast.LENGTH_SHORT).show();
+
     }
 }
