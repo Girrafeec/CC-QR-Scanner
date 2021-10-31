@@ -15,6 +15,7 @@ import android.graphics.Camera;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -171,6 +172,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         notSuccessScanResultDialog.show();
+
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (notSuccessScanResultDialog.isShowing())
+                    notSuccessScanResultDialog.dismiss();
+            }
+        };
+
+        // dismiss dialog after 5 seconds (1 secons equals to 1000 seconds)
+        handler.postDelayed(runnable, 3000);
 
         clickOk.setOnClickListener(new View.OnClickListener() {
             @Override
