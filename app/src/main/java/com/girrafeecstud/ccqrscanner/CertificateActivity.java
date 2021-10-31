@@ -206,25 +206,9 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
                     JSONObject jsonObject = new JSONObject(data);
                     jsonString = jsonObject.toString();
                     Log.i("json: ", jsonString);
-                    //fullJson.setText(jsonString);
 
-                    JSONArray fullCertificateJson = new JSONArray();
-
-                    if (!websiteUrl.contains("vaccine")) {
-                       fullCertificateJson = jsonObject.getJSONArray("items");
-                    }
-                    else if (websiteUrl.contains("vaccine")){
-                        fullCertificateJson = jsonObject.getJSONArray("");
-                    }
-
-                    for (int i=0; i<fullCertificateJson.length(); i++){
-
-                        JSONObject tr = fullCertificateJson.getJSONObject(i);
-                        jsonString = jsonString + tr.getString("attrs");
-                        fullJson.setVisibility(View.VISIBLE);
-                        fullJson.setText(jsonString);
-
-                    }
+                    ParseCertificateJson parseCertificateJson = new ParseCertificateJson(jsonObject);
+                    parseCertificateJson.parseJson();
 
                 }
 
