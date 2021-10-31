@@ -2,16 +2,24 @@ package com.girrafeecstud.ccqrscanner;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Camera;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +27,7 @@ import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.net.URL;
 
@@ -33,7 +42,13 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int CAMERA_REQUEST_CODE = 101;
 
+    private static final String SCAN_RESULT_NOT_URL = "SCAN_RESULT_NOT_URL";
+    private static final String SCAN_RESULT_INVALID_URL = "SCAN_RESULT_INVALID_URL";
+    private static final String SCAN_RESULT_VALID_URL = "SCAN_RESULT_VALID_URL";
+
     private TextView url;
+
+    private Dialog notSuccessScanResultDialog;
 
     private QuickResponseCodeURL quickResponseCodeURL;
     private CodeScanner codeScanner;
@@ -94,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initUiElements(){
         url = findViewById(R.id.urlTxt);
+        notSuccessScanResultDialog = new Dialog(this);
     }
 
     // procedure to check is it necessary to request camera permission
@@ -123,7 +139,8 @@ public class MainActivity extends AppCompatActivity {
     private void checkContent(String str){
 
         if (!quickResponseCodeURL.isURL(str)) {
-            Toast.makeText(this, "QR does not contain URL", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "QR does not contain URL", Toast.LENGTH_SHORT).show();
+            showNotSuccessScanResultAlertDialog(SCAN_RESULT_NOT_URL);
             return;
         }
         else
@@ -131,6 +148,44 @@ public class MainActivity extends AppCompatActivity {
 
         String a = quickResponseCodeURL.isValidURL(str);
         Toast.makeText(this, a, Toast.LENGTH_SHORT).show();
+
+    }
+
+    // procedure to show alert dialog with info about not success result
+    private void showNotSuccessScanResultAlertDialog(String scanResult){
+
+        notSuccessScanResultDialog.setContentView(R.layout.scan_result_alert_dialog);
+        notSuccessScanResultDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        RoundedImageView scanResultImage = notSuccessScanResultDialog.findViewById(R.id.scanStatusImgView);
+        Button clickOk = notSuccessScanResultDialog.findViewById(R.id.scanResultAlertDialogClickOkBtn);
+
+        switch (scanResult){
+            case SCAN_RESULT_NOT_URL:
+                scanResultImage.setImageResource(R.drawable.ic__891023_cancel_cercle_close_delete_dismiss_icon);
+                break;
+            case SCAN_RESULT_INVALID_URL:
+                scanResultImage.setImageResource(R.drawable.ic__891023_cancel_cercle_close_delete_dismiss_icon);
+                break;
+            default:
+                break;
+        }
+
+        notSuccessScanResultDialog.show();
+
+        clickOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                notSuccessScanResultDialog.cancel();
+                onResume();
+            }
+        });
+
+        notSuccessScanResultDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                onResume();
+            }
+        });
 
     }
 }

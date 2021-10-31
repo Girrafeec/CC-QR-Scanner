@@ -1,71 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
 
         <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/scanStatusImgView"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:id="@+id/scanStatusImgView"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:elevation="2dp"
-            android:background="@drawable/white_circle"
-            android:layout_centerHorizontal="true" />
+            android:background="@android:color/transparent"
+            android:elevation="2dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
             android:background="@drawable/white_rounded_recktangle"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="80dp">
+            android:orientation="vertical"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="70dp">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/scanStatusTxt"
-                android:textAlignment="center"
-                android:textSize="30dp"
-                android:textColor="@color/black"
-                android:text="QR-код не содержит ссылку!"
-                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"/>
+                android:layout_marginRight="20dp"
+                android:text="QR-код не содержит ссылку!"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="30dp"
+                android:textStyle="bold" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/scanStatusDescriptionTxt"
-                android:textAlignment="center"
-                android:textSize="20dp"
-                android:textColor="@color/black"
-                android:text="Отсканированный QR-код содержит данные, не являющиеся ссылкой на сертификат."
-                android:textStyle="normal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
                 android:layout_marginTop="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"/>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/showInHistoryBtn"
-                android:visibility="gone"/>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/scanResultAlertDialogClickOkBtn"
-                android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
+                android:text="Отсканированный QR-код содержит данные, не являющиеся ссылкой на сертификат."
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="normal" />
+
+            <Button
+                android:id="@+id/showInHistoryBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/scanResultAlertDialogClickOkBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
                 android:layout_marginTop="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="30dp"
+                android:text="Ок"
                 android:textColor="@color/white"
-                android:textSize="30dp"
-                android:text="Ок"/>
+                android:textSize="30dp" />
 
         </LinearLayout>
 
