@@ -41,6 +41,11 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -48,7 +53,6 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
     private LinearLayout error;
     private Button tryToConnectNetworkAgain;
-    private TextView fullJson;
     ProgressDialog progressDialog;
 
     private String certificateUrl = "", jsonString = "";
@@ -63,6 +67,9 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     private String passport = "";
     private String enPassport = "";
     private String birthDate = "";
+    private String stuff = "";
+
+    private static boolean firstThreadIsFinished = false;
 
     private ArrayList<String> htmlStrings = new ArrayList<>();
 
@@ -99,35 +106,16 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         checkInternetConnection();
 
         if (isConnectedToInternet()) {
-
-            Thread firstThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    getJsonFromUrl(certificateUrl);
-                }
-            });
-
-            Thread secondThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.i("before", "getting json");
-                    parseCertificateJson = new ParseCertificateJson(jsonObject);
-                    parseCertificateJson.parseJson();
-                    setCertificateDataValues();
-                }
-            });
-
-            firstThread.start();
-            //secondThread.start();
-
-            try {
-                firstThread.join();
-                secondThread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            getJsonFromUrl(certificateUrl);
 
         }
+    }
+
+    private void getJsonData(){
+
+        Log.i("before", "getting json");
+        setCertificateDataValues();
+
     }
 
     private void getDataFromMainActivity(){
@@ -139,7 +127,6 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
         error = findViewById(R.id.certificateActivityErrorLinLay);
         tryToConnectNetworkAgain = findViewById(R.id.certActivityTryConnectToNetworkAgainBtn);
-        fullJson = findViewById(R.id.fullJsonTxt);
 
     }
 
@@ -180,21 +167,15 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         passport= parseCertificateJson.getPassport();
         enPassport= parseCertificateJson.getEnPassport();
         birthDate= parseCertificateJson.getBirthDate();
+        stuff = parseCertificateJson.getStuff();
 
-        ///////////////html code necessary tags:
-        /////////status-value cert-name - статус сертификата
-        ///////////////title-h4 white status-title main-title - титульник сертификата
+        if (status.equals("1"))
+            status = "Действителен";
+        else
+            status = "Недействителен";
 
-        for (int i = 0; i < htmlStrings.size(); i++){
-
-            if (htmlStrings.get(i).contains("title-h4 white status-title main-title"))
-                if (title.isEmpty())
-                    title = htmlStrings.get(i).substring(0, htmlStrings.get(i).indexOf(">") + 1 )
-                            + htmlStrings.get(i).substring(htmlStrings.get(i).indexOf(">") + 1 , htmlStrings.get(i).lastIndexOf("<"));
-
-            Log.i("new title", title);
-
-        }
+        if (title.isEmpty() && !stuff.isEmpty())
+            title = "Сертификат о вакцинации COVID-19";
 
     }
 
@@ -269,10 +250,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
                 String htmlLine = "";
                 String htmlString = "";
 
-                int iter = 0;
                 while((htmlLine = bufferedReader.readLine()) != null){
-                    Log.i("iter", String.valueOf(iter));
-                    iter++;
                     htmlString += htmlLine;
                     htmlStrings.add(htmlLine);
                 }
@@ -308,6 +286,8 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
                     jsonObject = new JSONObject(data);
                     jsonString = jsonObject.toString();
                     Log.i("json: ", jsonString);
+                    parseCertificateJson = new ParseCertificateJson(jsonObject);
+                    parseCertificateJson.parseJson();
 
                 }
 
@@ -328,6 +308,8 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
                 }
             });
+
+            getJsonData();
 
         }
     }
