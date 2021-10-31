@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String SCAN_RESULT_INVALID_URL = "SCAN_RESULT_INVALID_URL";
     private static final String SCAN_RESULT_VALID_URL = "SCAN_RESULT_VALID_URL";
 
+    public static final String EXTRA_SCAN_RESULT_VALID_URL = "com.girrafeecstud.ccqrscanner.EXTRA_SCAN_RESULT_VALID_URL";
+
     private TextView url;
 
     private Dialog notSuccessScanResultDialog;
@@ -146,12 +148,14 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        startCertificateActivity();
+        startCertificateActivity(str);
 
     }
 
-    private void startCertificateActivity(){
+    private void startCertificateActivity(String str){
         Intent intent = new Intent(MainActivity.this, CertificateActivity.class);
+
+        intent.putExtra(EXTRA_SCAN_RESULT_VALID_URL, str);
         MainActivity.this.startActivity(intent);
     }
 
