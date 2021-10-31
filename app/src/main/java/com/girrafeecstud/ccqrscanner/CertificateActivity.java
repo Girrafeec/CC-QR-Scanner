@@ -14,6 +14,8 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     private LinearLayout error;
     private Button tryToConnectNetworkAgain;
 
+    private CertificateActivityBinding binding;
+
     @Override
     public void onClick(View view) {
 
