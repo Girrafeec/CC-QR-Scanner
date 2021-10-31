@@ -52,8 +52,25 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     ProgressDialog progressDialog;
 
     private String certificateUrl = "", jsonString = "";
+    private String type = "";
+    private String title = "";
+    private String status = "";
+    private String certificateId = "";
+    private String expiredAt = "";
+    private String fio = "";
+    private String enFio = "";
+    private String recoveryDate = "";
+    private String passport = "";
+    private String enPassport = "";
+    private String birthDate = "";
 
-    Handler mainHandler = new Handler();
+    private ArrayList<String> htmlStrings = new ArrayList<>();
+
+    private Handler mainHandler = new Handler();
+
+    private JSONObject jsonObject;
+
+    private ParseCertificateJson parseCertificateJson;
 
     @Override
     public void onClick(View view) {
@@ -81,8 +98,36 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
         checkInternetConnection();
 
-        if (isConnectedToInternet())
-            getJsonFromUrl(certificateUrl);
+        if (isConnectedToInternet()) {
+
+            Thread firstThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    getJsonFromUrl(certificateUrl);
+                }
+            });
+
+            Thread secondThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i("before", "getting json");
+                    parseCertificateJson = new ParseCertificateJson(jsonObject);
+                    parseCertificateJson.parseJson();
+                    setCertificateDataValues();
+                }
+            });
+
+            firstThread.start();
+            //secondThread.start();
+
+            try {
+                firstThread.join();
+                secondThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     private void getDataFromMainActivity(){
@@ -119,6 +164,37 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
         FetchData fetchData = new FetchData(url);
         fetchData.start();
+
+    }
+
+    private void setCertificateDataValues(){
+
+        type = parseCertificateJson.getType();
+        title= parseCertificateJson.getTitle();
+        status= parseCertificateJson.getStatus();
+        certificateId= parseCertificateJson.getCertificateId();
+        expiredAt= parseCertificateJson.getExpiredAt();
+        fio= parseCertificateJson.getFio();
+        enFio= parseCertificateJson.getEnFio();
+        recoveryDate= parseCertificateJson.getRecoveryDate();
+        passport= parseCertificateJson.getPassport();
+        enPassport= parseCertificateJson.getEnPassport();
+        birthDate= parseCertificateJson.getBirthDate();
+
+        ///////////////html code necessary tags:
+        /////////status-value cert-name - статус сертификата
+        ///////////////title-h4 white status-title main-title - титульник сертификата
+
+        for (int i = 0; i < htmlStrings.size(); i++){
+
+            if (htmlStrings.get(i).contains("title-h4 white status-title main-title"))
+                if (title.isEmpty())
+                    title = htmlStrings.get(i).substring(0, htmlStrings.get(i).indexOf(">") + 1 )
+                            + htmlStrings.get(i).substring(htmlStrings.get(i).indexOf(">") + 1 , htmlStrings.get(i).lastIndexOf("<"));
+
+            Log.i("new title", title);
+
+        }
 
     }
 
@@ -170,9 +246,6 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
                 ArrayList<String> ar = new ArrayList<>(Arrays.asList(urlElementsArray));
                 ar.remove("");
 
-                for (int i=0; i< ar.size(); i++)
-                    System.out.println(ar.get(i));
-
                 String jsonUrl = "";
 
                 if (websiteUrl.contains("vaccine")) {
@@ -183,32 +256,58 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
                 Log.i("json url: ", jsonUrl);
 
-                Log.i("go to ", "thread");
-                URL url = new URL(jsonUrl);
+                ///////////////////////connect to original url to get html code///////////////
+                URL url = new URL(websiteUrl);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
-                Log.i("connection started", " ok");
+                Log.i("connection url started", " ");
 
                 InputStream inputStream = httpURLConnection.getInputStream();
 
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String htmlLine = "";
+                String htmlString = "";
+
+                int iter = 0;
+                while((htmlLine = bufferedReader.readLine()) != null){
+                    Log.i("iter", String.valueOf(iter));
+                    iter++;
+                    htmlString += htmlLine;
+                    htmlStrings.add(htmlLine);
+                }
+                Log.i("html String", htmlString);
+
+                /*httpURLConnection.disconnect();
+                inputStream.reset();
+                inputStream.close();
+                bufferedReader.reset();
+                bufferedReader.close();*/
+                ///////////////////////////////////////////////////////////////////////////
+
+
+                //////////////////////connect to json url///////////////////////////////////
+                url = new URL(jsonUrl);
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+
+                Log.i("connection json started", " ");
+
+                inputStream = httpURLConnection.getInputStream();
+
+                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
                 String line = "";
 
                 while((line = bufferedReader.readLine()) != null){
                     data = data + line;
                 }
+                ////////////////////////////////////////////////////////////////////////////
 
                 if (!data.isEmpty()){
 
-                    Log.i("data", data);
-
-                    JSONObject jsonObject = new JSONObject(data);
+                    jsonObject = new JSONObject(data);
                     jsonString = jsonObject.toString();
                     Log.i("json: ", jsonString);
-
-                    ParseCertificateJson parseCertificateJson = new ParseCertificateJson(jsonObject);
-                    parseCertificateJson.parseJson();
 
                 }
 

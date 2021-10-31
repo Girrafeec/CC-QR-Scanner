@@ -168,52 +168,37 @@ public class ParseCertificateJson {
     // procedure parse items json for extra info
     private void parseExtraData(String dataType, String dataTitle, JSONObject extraJsonObject){
 
-        if (dataType.equals("date") && dataTitle.equals("Дата выздоровления")) {
-            try {
+        try {
+
+            if (dataType.equals("date") && dataTitle.equals("Дата выздоровления")) {
                 recoveryDate = extraJsonObject.getString("value");
                 return;
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-        }
 
-        if (dataType.equals("fio")) {
-            try {
+            if (dataType.equals("fio")) {
                 fio = extraJsonObject.getString("value");
                 enFio = extraJsonObject.getString("envalue");
                 return;
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-        }
 
-        if (dataType.equals("birthDate")) {
-            try {
+            if (dataType.equals("birthDate")) {
                 birthDate = extraJsonObject.getString("value");
                 return;
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-        }
 
-        if (dataType.equals("passport")) {
-            try {
+            if (dataType.equals("passport")) {
                 passport = extraJsonObject.getString("value");
                 return;
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-        }
 
-        if (dataType.equals("enPassport")) {
-            try {
+            if (dataType.equals("enPassport")) {
                 enPassport = extraJsonObject.getString("value");
                 return;
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-        }
 
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 }
