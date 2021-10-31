@@ -30,6 +30,8 @@ import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import org.w3c.dom.Text;
+
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Dialog notSuccessScanResultDialog;
 
-    private QuickResponseCodeURL quickResponseCodeURL;
+    private QuickResponseCodeURL quickResponseCodeURL = new QuickResponseCodeURL();
     private CodeScanner codeScanner;
     private CodeScannerView codeScannerView;
 
@@ -61,14 +63,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        quickResponseCodeURL = new QuickResponseCodeURL();
 
         askCameraPermission();
 
         initUiElements();
         initCodeScanner();
 
-       codeScanner.setDecodeCallback(new DecodeCallback() {
+        codeScannerProc();
+
+    }
+
+    private void codeScannerProc(){
+        codeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
             public void onDecoded(@NonNull final Result result) {
                 runOnUiThread(new Runnable() {
@@ -87,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
                 codeScanner.startPreview();
             }
         });
-
     }
 
     @Override
@@ -144,11 +149,11 @@ public class MainActivity extends AppCompatActivity {
             showNotSuccessScanResultAlertDialog(SCAN_RESULT_NOT_URL);
             return;
         }
-        else
-            Toast.makeText(this, "QR contains URL", Toast.LENGTH_SHORT).show();
 
-        String a = quickResponseCodeURL.isValidURL(str);
-        Toast.makeText(this, a, Toast.LENGTH_SHORT).show();
+        if (!quickResponseCodeURL.isValidURL(str)) {
+            showNotSuccessScanResultAlertDialog(SCAN_RESULT_INVALID_URL);
+            return;
+        }
 
     }
 
@@ -159,13 +164,19 @@ public class MainActivity extends AppCompatActivity {
         notSuccessScanResultDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         RoundedImageView scanResultImage = notSuccessScanResultDialog.findViewById(R.id.scanStatusImgView);
         Button clickOk = notSuccessScanResultDialog.findViewById(R.id.scanResultAlertDialogClickOkBtn);
+        TextView scanStatusShortMessage = notSuccessScanResultDialog.findViewById(R.id.scanStatusTxt);
+        TextView scanStatusLongMessage = notSuccessScanResultDialog.findViewById(R.id.scanStatusDescriptionTxt);
 
         switch (scanResult){
             case SCAN_RESULT_NOT_URL:
                 scanResultImage.setImageResource(R.drawable.ic__891023_cancel_cercle_close_delete_dismiss_icon);
+                scanStatusShortMessage.setText("QR-код не содержит ссылку!");
+                scanStatusLongMessage.setText("Отсканированный QR-код содержит данные, не являющиеся ссылкой на сертификат.");
                 break;
             case SCAN_RESULT_INVALID_URL:
                 scanResultImage.setImageResource(R.drawable.ic__891023_cancel_cercle_close_delete_dismiss_icon);
+                scanStatusShortMessage.setText("QR-код содержит неправильную ссылку!");
+                scanStatusLongMessage.setText("Отсканированный QR-код содержит ссылку на сторонний ресурс или фишинговый сайт.");
                 break;
             default:
                 break;
@@ -183,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         // dismiss dialog after 5 seconds (1 secons equals to 1000 seconds)
-        handler.postDelayed(runnable, 3000);
+        handler.postDelayed(runnable, 5000);
 
         clickOk.setOnClickListener(new View.OnClickListener() {
             @Override

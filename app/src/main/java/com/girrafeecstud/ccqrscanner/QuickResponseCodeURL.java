@@ -14,6 +14,8 @@ public class QuickResponseCodeURL {
                     + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)",
             Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
 
+    private static final String[] validURL = new String[]{"www.gosuslugi.ru"};
+
     // function to check if qr contains url
     public boolean isURL(String str){
 
@@ -24,12 +26,17 @@ public class QuickResponseCodeURL {
 
     }
 
-    public String isValidURL(String str){
+    public boolean isValidURL(String str){
         Uri quickResponseCodeURI = Uri.parse(str);
 
         String domainName = quickResponseCodeURI.getHost();
 
-        return domainName;
+        for (int i=0; i < validURL.length; i++){
+            if (domainName.equals(validURL[0]))
+                return true;
+        }
+
+        return false;
 
     }
 
