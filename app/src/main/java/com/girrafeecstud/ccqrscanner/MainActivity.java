@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(MainActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
-                        url.setText(result.getText());
+                        //url.setText(result.getText());
                         checkContent(result.getText());
                     }
                 });
