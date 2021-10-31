@@ -2,7 +2,6 @@ package com.girrafeecstud.ccqrscanner;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -11,16 +10,12 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Camera;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,10 +24,6 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
 import com.makeramen.roundedimageview.RoundedImageView;
-
-import org.w3c.dom.Text;
-
-import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -155,12 +146,19 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        startCertificateActivity();
+
+    }
+
+    private void startCertificateActivity(){
+        Intent intent = new Intent(MainActivity.this, CertificateActivity.class);
+        MainActivity.this.startActivity(intent);
     }
 
     // procedure to show alert dialog with info about not success result
     private void showNotSuccessScanResultAlertDialog(String scanResult){
 
-        notSuccessScanResultDialog.setContentView(R.layout.scan_result_alert_dialog);
+        notSuccessScanResultDialog.setContentView(R.layout.scan_result_dialog);
         notSuccessScanResultDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         RoundedImageView scanResultImage = notSuccessScanResultDialog.findViewById(R.id.scanStatusImgView);
         Button clickOk = notSuccessScanResultDialog.findViewById(R.id.scanResultAlertDialogClickOkBtn);
