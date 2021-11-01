@@ -60,10 +60,11 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     private Button tryToConnectNetworkAgain;
 
     private TextView jsonStatusTxt;
+
     private TextView titleTxt, statusTxt, certificateIdTxt, recoveryDateTxt, expiredAtTxt
             , fioTxt, pasportTxt, enPasportTxt, birthDateTxt;
 
-    private ProgressDialog progressDialog;
+    private ProgressBar progressBar;
 
     private ScrollView scrollView;
 
@@ -81,11 +82,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     private String birthDate = "";
     private String stuff = "";
 
-    private static boolean firstThreadIsFinished = false, jsonSucceeed = false;
-
-    private ArrayList<String> htmlStrings = new ArrayList<>();
-
-    private Handler mainHandler = new Handler();
+    private static boolean jsonSucceeed = false;
 
     private JSONObject jsonObject;
 
@@ -96,6 +93,8 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
         switch (view.getId()){
             case R.id.certActivityTryConnectToNetworkAgainBtn:
+                error.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
                 checkInternetConnection();
                 break;
             default:
@@ -117,10 +116,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
         checkInternetConnection();
 
-        if (isConnectedToInternet()) {
-            getJsonFromUrl(certificateUrl);
-        }
-
+        // continue code only when json object is received
         jsonStatusTxt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -134,6 +130,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void afterTextChanged(Editable editable) {
+                progressBar.setVisibility(View.GONE);
                 getJsonData();
             }
         });
@@ -156,9 +153,12 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
     private void initUiElements(){
 
+        progressBar = findViewById(R.id.getJsonProgressBar);
+
         error = findViewById(R.id.certificateActivityErrorLinLay);
         certificateBackground = findViewById(R.id.certificateCardLinLay);
         recoveryDateLinLay = findViewById(R.id.certificateRecoveryDateLinlay);
+
         tryToConnectNetworkAgain = findViewById(R.id.certActivityTryConnectToNetworkAgainBtn);
 
         scrollView = findViewById(R.id.certificateActivityScrollBar);
@@ -178,13 +178,19 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
     private void checkInternetConnection(){
 
-        if (!isConnectedToInternet())
+        if (!isConnectedToInternet()) {
+            progressBar.setVisibility(View.GONE);
             error.setVisibility(View.VISIBLE);
-        else
+        }
+        else {
+            error.setVisibility(View.VISIBLE);
             error.setVisibility(View.INVISIBLE);
+            getJsonFromUrl(certificateUrl);
+        }
 
     }
 
+    // function returns boolean result of internet connection
     private boolean isConnectedToInternet(){
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(CertificateActivity.CONNECTIVITY_SERVICE);
@@ -198,6 +204,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         fetchJsonData.execute();
     }
 
+    // set json data to string values
     private void setCertificateDataValues(){
 
         type = parseCertificateJson.getType();
@@ -223,6 +230,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    // set json data to ui elements
     private void setUiValues(){
 
         scrollView.setVisibility(View.VISIBLE);
@@ -252,6 +260,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    // class that makes connection to the url and get json object
     private class FetchJsonData extends AsyncTask{
 
         String websiteUrl;
@@ -272,18 +281,6 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         }
 
         public void fetch(){
-
-            mainHandler.post(new Runnable() {
-                @Override
-                public void run() {
-
-                    progressDialog = new ProgressDialog(CertificateActivity.this);
-                    progressDialog.setMessage("Загрузка...");
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();
-
-                }
-            });
 
             // 1 тип
             //https://www.gosuslugi.ru/covid-cert/verify/9780000018577364?lang=ru&ck=8184f31948a5353cf9a0c28b7326d1c6 - url
@@ -348,16 +345,6 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-            mainHandler.post(new Runnable() {
-                @Override
-                public void run() {
-
-                    if (progressDialog.isShowing())
-                        progressDialog.dismiss();
-
-                }
-            });
 
         }
     }
