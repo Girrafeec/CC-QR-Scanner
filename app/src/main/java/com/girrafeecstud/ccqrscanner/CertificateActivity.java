@@ -1,10 +1,16 @@
 package com.girrafeecstud.ccqrscanner;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,9 +58,14 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class CertificateActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private LinearLayout error;
+    private LinearLayout error, certificateBackground;
     private Button tryToConnectNetworkAgain;
-    ProgressDialog progressDialog;
+    private TextView titleTxt, statusTxt, certificateIdTxt, recoveryDateTxt, expiredAtTxt
+            , fioTxt, pasportTxt, enPasportTxt, birthDateTxt;
+
+    private ProgressDialog progressDialog;
+
+    private ScrollView scrollView;
 
     private String certificateUrl = "", jsonString = "";
     private String type = "";
@@ -126,7 +138,20 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     private void initUiElements(){
 
         error = findViewById(R.id.certificateActivityErrorLinLay);
+        certificateBackground = findViewById(R.id.certificateCardLinLay);
         tryToConnectNetworkAgain = findViewById(R.id.certActivityTryConnectToNetworkAgainBtn);
+
+        scrollView = findViewById(R.id.certificateActivityScrollBar);
+
+        birthDateTxt = findViewById(R.id.certificateBirthDateTxt);
+        certificateIdTxt = findViewById(R.id.certificateBirthDateTxt);
+        enPasportTxt = findViewById(R.id.certificateEnPassportTxt);
+        pasportTxt = findViewById(R.id.certificatePassportTxt);
+        fioTxt = findViewById(R.id.certificateFioTxt);
+        statusTxt = findViewById(R.id.certificateStatusTxt);
+        titleTxt = findViewById(R.id.certificateTitleTxt);
+        expiredAtTxt = findViewById(R.id.certificateExpiredDateDateTxt);
+        recoveryDateTxt = findViewById(R.id.certificateRecoveryDateTxt);
 
     }
 
@@ -176,6 +201,37 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
         if (title.isEmpty() && !stuff.isEmpty())
             title = "Сертификат о вакцинации COVID-19";
+
+        setUiValues();
+
+    }
+
+    private void setUiValues(){
+
+        scrollView.setVisibility(View.VISIBLE);
+
+        birthDateTxt.setText(birthDateTxt.getText() + birthDate);
+        certificateIdTxt.setText(certificateIdTxt.getText() + certificateId);
+        pasportTxt.setText(pasportTxt.getText() + passport);
+        fioTxt.setText(fioTxt.getText() + fio);
+        titleTxt.setText(titleTxt.getText() + title);
+        expiredAtTxt.setText(expiredAtTxt.getText() + expiredAt);
+
+        if (!enPassport.isEmpty()) {
+            enPasportTxt.setVisibility(View.VISIBLE);
+            enPasportTxt.setText(enPasportTxt.getText() + enPassport);
+        }
+
+        if (!recoveryDate.isEmpty()) {
+            recoveryDateTxt.setVisibility(View.VISIBLE);
+            recoveryDateTxt.setText(recoveryDateTxt.getText() + recoveryDate);
+        }
+
+        statusTxt.setText(status);
+        if (status.equals("Недействителен"))
+            certificateBackground.setBackground(ContextCompat.getDrawable(this, R.drawable.red_rounded_recktangle));
+
+
 
     }
 
@@ -309,9 +365,11 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
                 }
             });
 
-            getJsonData();
+
+            //getJsonData();
 
         }
+        getJsonData();
     }
 
 }
