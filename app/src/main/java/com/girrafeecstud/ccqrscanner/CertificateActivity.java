@@ -1,20 +1,18 @@
 package com.girrafeecstud.ccqrscanner;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.DocumentsContract;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -58,8 +56,10 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class CertificateActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private LinearLayout error, certificateBackground;
+    private LinearLayout error, certificateBackground, recoveryDateLinLay;
     private Button tryToConnectNetworkAgain;
+
+    private TextView jsonStatusTxt;
     private TextView titleTxt, statusTxt, certificateIdTxt, recoveryDateTxt, expiredAtTxt
             , fioTxt, pasportTxt, enPasportTxt, birthDateTxt;
 
@@ -81,7 +81,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     private String birthDate = "";
     private String stuff = "";
 
-    private static boolean firstThreadIsFinished = false;
+    private static boolean firstThreadIsFinished = false, jsonSucceeed = false;
 
     private ArrayList<String> htmlStrings = new ArrayList<>();
 
@@ -119,14 +119,33 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
         if (isConnectedToInternet()) {
             getJsonFromUrl(certificateUrl);
-
         }
+
+        jsonStatusTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Log.i("Text", "changed");
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                getJsonData();
+            }
+        });
     }
 
     private void getJsonData(){
 
         Log.i("before", "getting json");
+        parseCertificateJson = new ParseCertificateJson(jsonObject);
+        parseCertificateJson.parseJson();
         setCertificateDataValues();
+        setUiValues();
 
     }
 
@@ -139,12 +158,14 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
         error = findViewById(R.id.certificateActivityErrorLinLay);
         certificateBackground = findViewById(R.id.certificateCardLinLay);
+        recoveryDateLinLay = findViewById(R.id.certificateRecoveryDateLinlay);
         tryToConnectNetworkAgain = findViewById(R.id.certActivityTryConnectToNetworkAgainBtn);
 
         scrollView = findViewById(R.id.certificateActivityScrollBar);
 
+        jsonStatusTxt = findViewById(R.id.jsonSucceedTxt);
         birthDateTxt = findViewById(R.id.certificateBirthDateTxt);
-        certificateIdTxt = findViewById(R.id.certificateBirthDateTxt);
+        certificateIdTxt = findViewById(R.id.certificateIdTxt);
         enPasportTxt = findViewById(R.id.certificateEnPassportTxt);
         pasportTxt = findViewById(R.id.certificatePassportTxt);
         fioTxt = findViewById(R.id.certificateFioTxt);
@@ -173,10 +194,8 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void getJsonFromUrl(String url){
-
-        FetchData fetchData = new FetchData(url);
-        fetchData.start();
-
+        FetchJsonData fetchJsonData = new FetchJsonData(url);
+        fetchJsonData.execute();
     }
 
     private void setCertificateDataValues(){
@@ -202,8 +221,6 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         if (title.isEmpty() && !stuff.isEmpty())
             title = "Сертификат о вакцинации COVID-19";
 
-        setUiValues();
-
     }
 
     private void setUiValues(){
@@ -213,8 +230,8 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         birthDateTxt.setText(birthDateTxt.getText() + birthDate);
         certificateIdTxt.setText(certificateIdTxt.getText() + certificateId);
         pasportTxt.setText(pasportTxt.getText() + passport);
-        fioTxt.setText(fioTxt.getText() + fio);
-        titleTxt.setText(titleTxt.getText() + title);
+        fioTxt.setText(fio);
+        titleTxt.setText(title);
         expiredAtTxt.setText(expiredAtTxt.getText() + expiredAt);
 
         if (!enPassport.isEmpty()) {
@@ -223,29 +240,38 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         }
 
         if (!recoveryDate.isEmpty()) {
-            recoveryDateTxt.setVisibility(View.VISIBLE);
+            recoveryDateLinLay.setVisibility(View.VISIBLE);
             recoveryDateTxt.setText(recoveryDateTxt.getText() + recoveryDate);
         }
 
         statusTxt.setText(status);
         if (status.equals("Недействителен"))
             certificateBackground.setBackground(ContextCompat.getDrawable(this, R.drawable.red_rounded_recktangle));
-
-
+        else
+            certificateBackground.setBackground(ContextCompat.getDrawable(this, R.drawable.green_rounded_recktangle));
 
     }
 
-    private class FetchData extends Thread{
+    private class FetchJsonData extends AsyncTask{
 
         String websiteUrl;
         String data = "";
 
-        public FetchData(String websiteUrl){
+        public FetchJsonData(String websiteUrl){
             this.websiteUrl = websiteUrl;
         }
 
+        protected Object doInBackground(Object[] objects) {
+            fetch();
+            return null;
+        }
+
         @Override
-        public void run() {
+        protected void onPostExecute(Object o) {
+            jsonStatusTxt.setText(String.valueOf(jsonSucceeed));
+        }
+
+        public void fetch(){
 
             mainHandler.post(new Runnable() {
                 @Override
@@ -253,105 +279,73 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
                     progressDialog = new ProgressDialog(CertificateActivity.this);
                     progressDialog.setMessage("Загрузка...");
-                    //progressDialog.setContentView(R.layout.progress_dialog);
                     progressDialog.setCancelable(false);
                     progressDialog.show();
-
-                    Log.i("progress status: ", String.valueOf(progressDialog.isShowing()));
 
                 }
             });
 
+            // 1 тип
+            //https://www.gosuslugi.ru/covid-cert/verify/9780000018577364?lang=ru&ck=8184f31948a5353cf9a0c28b7326d1c6 - url
+            //https://www.gosuslugi.ru/api/covid-cert/v3/cert/check/9780000018577364?lang=ru&ck=8184f31948a5353cf9a0c28b7326d1c6 - json of url
 
+            //https://www.gosuslugi.ru/covid-cert/verify/8471082132567136?lang=ru&ck=feded94bb56d7c2580a314a6f4b472a4 - url
+            //https://www.gosuslugi.ru/api/covid-cert/v3/cert/check/8471082132567136?lang=ru&ck=feded94bb56d7c2580a314a6f4b472a4 - json of ilness
 
+            // 2 тип
+            //https://www.gosuslugi.ru/vaccine/cert/verify/0fcfc8a8-945d-4b2e-a6ab-691c3d6fd67d - url
+            //https://www.gosuslugi.ru/api/vaccine/v1/cert/verify/0fcfc8a8-945d-4b2e-a6ab-691c3d6fd67d - json of vacc from paper
+
+            String[] urlElementsArray = websiteUrl.split("/");
+
+            ArrayList<String> ar = new ArrayList<>(Arrays.asList(urlElementsArray));
+            ar.remove("");
+
+            String jsonUrl = "";
+
+            if (websiteUrl.contains("vaccine")) {
+                jsonUrl = ar.get(0) + "//" + ar.get(1) + "/api/" + ar.get(2) + "/v1/" + ar.get(3) + "/" + ar.get(4) + "/" + ar.get(5);
+            }else if (websiteUrl.contains("covid-cert")) {
+                jsonUrl = ar.get(0) + "//" + ar.get(1) + "/api/" + ar.get(2) + "/v3/cert/check/" + ar.get(4);
+            }
+
+            Log.i("json url: ", jsonUrl);
+
+            ///////////////////////connect to original url to get html code///////////////
             try {
 
-
-                // 1 тип
-                //https://www.gosuslugi.ru/covid-cert/verify/9780000018577364?lang=ru&ck=8184f31948a5353cf9a0c28b7326d1c6 - url
-                //https://www.gosuslugi.ru/api/covid-cert/v3/cert/check/9780000018577364?lang=ru&ck=8184f31948a5353cf9a0c28b7326d1c6 - json of url
-
-                //https://www.gosuslugi.ru/covid-cert/verify/8471082132567136?lang=ru&ck=feded94bb56d7c2580a314a6f4b472a4 - url
-                //https://www.gosuslugi.ru/api/covid-cert/v3/cert/check/8471082132567136?lang=ru&ck=feded94bb56d7c2580a314a6f4b472a4 - json of ilness
-
-                // 2 тип
-                //https://www.gosuslugi.ru/vaccine/cert/verify/0fcfc8a8-945d-4b2e-a6ab-691c3d6fd67d - url
-                //https://www.gosuslugi.ru/api/vaccine/v1/cert/verify/0fcfc8a8-945d-4b2e-a6ab-691c3d6fd67d - json of vacc from paper
-
-                String[] urlElementsArray = websiteUrl.split("/");
-
-                ArrayList<String> ar = new ArrayList<>(Arrays.asList(urlElementsArray));
-                ar.remove("");
-
-                String jsonUrl = "";
-
-                if (websiteUrl.contains("vaccine")) {
-                    jsonUrl = ar.get(0) + "//" + ar.get(1) + "/api/" + ar.get(2) + "/v1/" + ar.get(3) + "/" + ar.get(4) + "/" + ar.get(5);
-                }else if (websiteUrl.contains("covid-cert")) {
-                    jsonUrl = ar.get(0) + "//" + ar.get(1) + "/api/" + ar.get(2) + "/v3/cert/check/" + ar.get(4);
-                }
-
-                Log.i("json url: ", jsonUrl);
-
-                ///////////////////////connect to original url to get html code///////////////
-                URL url = new URL(websiteUrl);
+                URL url = new URL(jsonUrl);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
-                Log.i("connection url started", " ");
+                Log.i("connection json started", " ");
 
                 InputStream inputStream = httpURLConnection.getInputStream();
 
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String htmlLine = "";
-                String htmlString = "";
-
-                while((htmlLine = bufferedReader.readLine()) != null){
-                    htmlString += htmlLine;
-                    htmlStrings.add(htmlLine);
-                }
-                Log.i("html String", htmlString);
-
-                /*httpURLConnection.disconnect();
-                inputStream.reset();
-                inputStream.close();
-                bufferedReader.reset();
-                bufferedReader.close();*/
-                ///////////////////////////////////////////////////////////////////////////
-
-
-                //////////////////////connect to json url///////////////////////////////////
-                url = new URL(jsonUrl);
-                httpURLConnection = (HttpURLConnection) url.openConnection();
-
-                Log.i("connection json started", " ");
-
-                inputStream = httpURLConnection.getInputStream();
-
-                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
                 String line = "";
 
                 while((line = bufferedReader.readLine()) != null){
                     data = data + line;
                 }
-                ////////////////////////////////////////////////////////////////////////////
 
                 if (!data.isEmpty()){
 
                     jsonObject = new JSONObject(data);
                     jsonString = jsonObject.toString();
                     Log.i("json: ", jsonString);
-                    parseCertificateJson = new ParseCertificateJson(jsonObject);
-                    parseCertificateJson.parseJson();
+                    jsonSucceeed = true;
+                    // parseCertificateJson = new ParseCertificateJson(jsonObject);
+                    //  parseCertificateJson.parseJson();
 
                 }
 
-            }catch (MalformedURLException e){
+
+            } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            }catch (JSONException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
@@ -365,11 +359,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
                 }
             });
 
-
-            //getJsonData();
-
         }
-        getJsonData();
     }
 
 }

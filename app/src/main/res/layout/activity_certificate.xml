@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".CertificateActivity">
 
+    <TextView
+        android:id="@+id/jsonSucceedTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,7 +68,7 @@
         android:layout_height="match_parent"
         android:id="@+id/certificateActivityScrollBar"
         android:scrollbars="none"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -76,8 +86,7 @@
                 android:orientation="vertical"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/green_rounded_recktangle">
+                android:layout_marginLeft="10dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -86,7 +95,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginLeft="20dp"
-                    android:text="УУУ"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:textSize="20dp"
@@ -101,7 +110,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginLeft="20dp"
                     android:background="@drawable/oval_text_white_background"
-                    android:text="УУУ"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textStyle="normal"
                     android:textSize="15dp"
@@ -127,16 +136,18 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/certificateRecoveryDateLinlay"
                 android:orientation="horizontal"
                 android:labelFor="@+id/certificateCardLinLay"
-                android:gravity="center_horizontal">
+                android:gravity="center_horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_baseline_calendar_today_24"
                     android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="10dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginBottom="20dp"/>
 
@@ -168,7 +179,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_baseline_calendar_today_24"
                     android:layout_marginTop="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="10dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginBottom="20dp"/>
 
@@ -177,6 +188,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/certificateExpiredDateDateTxt"
                     android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/oval_text_white_background"
@@ -196,7 +208,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
-                android:text="УУУ"
+                android:text=""
                 android:textColor="@color/black"
                 android:textStyle="normal"
                 android:textSize="15dp"
@@ -242,7 +254,8 @@
                 android:textColor="@color/black"
                 android:textStyle="normal"
                 android:textSize="15dp"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

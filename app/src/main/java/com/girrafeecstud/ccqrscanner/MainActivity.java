@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
             case SCAN_RESULT_NOT_URL:
                 scanResultImage.setImageResource(R.drawable.ic__891023_cancel_cercle_close_delete_dismiss_icon);
                 scanStatusShortMessage.setText("QR-код не содержит ссылку!");
-                scanStatusLongMessage.setText("Отсканированный QR-код содержит данные, не являющиеся ссылкой на сертификат.");
+                scanStatusLongMessage.setText("Отсканированный QR-код содержит данные, не являющиеся ссылкой.");
                 break;
             case SCAN_RESULT_INVALID_URL:
                 scanResultImage.setImageResource(R.drawable.ic__891023_cancel_cercle_close_delete_dismiss_icon);
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         // dismiss dialog after 5 seconds (1 secons equals to 1000 seconds)
-        handler.postDelayed(runnable, 5000);
+        handler.postDelayed(runnable, 3000);
 
         clickOk.setOnClickListener(new View.OnClickListener() {
             @Override
