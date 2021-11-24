@@ -88,6 +88,8 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
     private ParseCertificateJson parseCertificateJson;
 
+    private HistoryFileInputOutput historyFileInputOutput = new HistoryFileInputOutput(this);
+
     @Override
     public void onClick(View view) {
 
@@ -143,6 +145,8 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         parseCertificateJson.parseJson();
         setCertificateDataValues();
         setUiValues();
+        //checkPotentialCertificateReuse();
+        saveCertificateToMemory();
 
     }
 
@@ -257,6 +261,17 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
             certificateBackground.setBackground(ContextCompat.getDrawable(this, R.drawable.red_rounded_recktangle));
         else
             certificateBackground.setBackground(ContextCompat.getDrawable(this, R.drawable.green_rounded_recktangle));
+
+    }
+
+    // save certificate data to local memory file
+    private void saveCertificateToMemory() {
+
+        historyFileInputOutput.writeValidQrToFile(3, false, type, title, status, certificateId, expiredAt,
+                fio, enFio, recoveryDate, passport, enPassport, birthDate);
+
+        //String str = historyFileInputOutput.readFile();
+        //Toast.makeText(this, str, Toast.LENGTH_LONG).show();
 
     }
 

@@ -141,6 +141,7 @@ public class HistoryFileInputOutput {
             }
 
             //Toast.makeText(context, sb.toString(), Toast.LENGTH_SHORT).show();
+            //Log.i("history", history);
 
             history = sb.toString();
 

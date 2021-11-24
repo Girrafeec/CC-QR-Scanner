@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(MainActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
                         //url.setText(result.getText());
                         checkContent(result.getText());
                     }
@@ -168,12 +169,14 @@ public class MainActivity extends AppCompatActivity {
     private void checkContent(String str){
 
         if (!quickResponseCodeURL.isURL(str)) {
+            historyFileInputOutput.writeInvalidQrToFile(1, str);
             //Toast.makeText(this, "QR does not contain URL", Toast.LENGTH_SHORT).show();
             showNotSuccessScanResultAlertDialog(SCAN_RESULT_NOT_URL);
             return;
         }
 
         if (!quickResponseCodeURL.isValidURL(str)) {
+            historyFileInputOutput.writeInvalidQrToFile(2, str);
             showNotSuccessScanResultAlertDialog(SCAN_RESULT_INVALID_URL);
             return;
         }
@@ -242,6 +245,9 @@ public class MainActivity extends AppCompatActivity {
                 onResume();
             }
         });
+
+        //String ert = historyFileInputOutput.readFile();
+        //Toast.makeText(this, ert, Toast.LENGTH_LONG).show();
 
     }
 }
