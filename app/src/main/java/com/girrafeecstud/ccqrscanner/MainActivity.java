@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.zxing.Result;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -50,12 +52,13 @@ public class MainActivity extends AppCompatActivity {
     private CodeScanner codeScanner;
     private CodeScannerView codeScannerView;
 
+    private BottomNavigationView bottomNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         askCameraPermission();
 
@@ -63,6 +66,29 @@ public class MainActivity extends AppCompatActivity {
         initCodeScanner();
 
         codeScannerProc();
+
+        // Set mainActivity selected in bottom nav bar
+        bottomNavigationView.setSelectedItemId(R.id.mainActivity);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.organizationProfileActivity:
+                        MainActivity.this.startActivity(new Intent(MainActivity.this, OrganizationProfileActivity.class));
+                        overridePendingTransition(0,0);
+                        break;
+                    case R.id.quickResponseCodeHistoryActivity:
+                        MainActivity.this.startActivity(new Intent(MainActivity.this, QuickResponseCodeHistoryActivity.class));
+                        overridePendingTransition(0,0);
+                        break;
+                    case R.id.mainActivity:
+                        return true;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
 
     }
 
@@ -108,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initUiElements(){
         url = findViewById(R.id.urlTxt);
+        bottomNavigationView = findViewById(R.id.mainNavigationMenu);
         notSuccessScanResultDialog = new Dialog(this);
     }
 
