@@ -23,7 +23,7 @@ public class QuickResponseCodeHistoryItem {
     QuickResponseCodeURL quickResponseCodeURL = new QuickResponseCodeURL();
 
     // Constructor for qr code with content without url or with invalid url
-    public QuickResponseCodeHistoryItem(String content, int qrCodeType){
+    public QuickResponseCodeHistoryItem(int qrCodeType, String content){
         if (!quickResponseCodeURL.isURL(content))
             this.content = content;
         else

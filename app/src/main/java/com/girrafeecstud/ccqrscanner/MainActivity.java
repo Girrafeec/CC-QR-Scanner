@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private Dialog notSuccessScanResultDialog;
 
     private QuickResponseCodeURL quickResponseCodeURL = new QuickResponseCodeURL();
+    private HistoryFileInputOutput historyFileInputOutput = new HistoryFileInputOutput(MainActivity.this);
     private CodeScanner codeScanner;
     private CodeScannerView codeScannerView;
 
@@ -59,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        historyFileInputOutput.createHistoryFile();
 
         askCameraPermission();
 
