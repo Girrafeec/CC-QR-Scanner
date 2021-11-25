@@ -33,7 +33,7 @@ public class QuickResponseCodeHistoryItem {
     }
 
     // Constructor for qr code with valid certificate url
-    public QuickResponseCodeHistoryItem(int qrCodeType, boolean certificateReuse,String type, String title, String status,
+    public QuickResponseCodeHistoryItem(int qrCodeType, boolean certificateReuse, String type, String title, String status,
                                         String certificateId, String expiredAt, String fio, String enFio, String recoveryDate,
                                         String passport, String enPassport, String birthDate) {
 
@@ -57,5 +57,67 @@ public class QuickResponseCodeHistoryItem {
         this.birthDate = birthDate;
     }
 
+    public int getQrCodeType() {
+        return qrCodeType;
+    }
 
+    public boolean isCertificateReuse() {
+        return certificateReuse;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getImgStatus() {
+        return imgStatus;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getCertificateId() {
+        return certificateId;
+    }
+
+    public String getExpiredAt() {
+        return expiredAt;
+    }
+
+    public String getFio() {
+        return fio;
+    }
+
+    public String getEnFio() {
+        return enFio;
+    }
+
+    public String getRecoveryDate() {
+        return recoveryDate;
+    }
+
+    public String getPassport() {
+        return passport;
+    }
+
+    public String getEnPassport() {
+        return enPassport;
+    }
+
+    public String getBirthDate() {
+        return birthDate;
+    }
 }

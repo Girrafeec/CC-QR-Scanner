@@ -83,12 +83,15 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     private String stuff = "";
 
     private static boolean jsonSucceeed = false;
+    private boolean certificateReuse = false;
 
     private JSONObject jsonObject;
 
     private ParseCertificateJson parseCertificateJson;
 
     private HistoryFileInputOutput historyFileInputOutput = new HistoryFileInputOutput(this);
+
+    private HistoryFileParser historyFileParser = new HistoryFileParser();
 
     @Override
     public void onClick(View view) {
@@ -145,7 +148,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         parseCertificateJson.parseJson();
         setCertificateDataValues();
         setUiValues();
-        //checkPotentialCertificateReuse();
+        checkPotentialCertificateReuse();
         saveCertificateToMemory();
 
     }
@@ -264,13 +267,36 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    // procedure to check if current certificate eas used earlier
+    private void checkPotentialCertificateReuse(){
+
+        String history = historyFileInputOutput.readFile();
+        historyFileParser.convertHistoryToArrayList(history);
+
+        for (int i=0; i<historyFileParser.getQuickResponseCodeHistoryItemArrayList().size(); i++){
+
+            if (historyFileParser.getQuickResponseCodeHistoryItemArrayList().get(i).getQrCodeType() == 3 &&
+                    historyFileParser.getQuickResponseCodeHistoryItemArrayList().get(i).getCertificateId() == certificateId)
+                certificateReuse = true;
+                //TODO доделать возможный поиск переиспользования
+
+
+        }
+
+    }
+
     // save certificate data to local memory file
     private void saveCertificateToMemory() {
 
-        historyFileInputOutput.writeValidQrToFile(3, false, type, title, status, certificateId, expiredAt,
+        if (recoveryDate.isEmpty())
+            recoveryDate = "0";
+        if (enPassport.isEmpty())
+            enPassport = "0";
+
+        historyFileInputOutput.writeValidQrToFile(3, certificateReuse, type, title, status, certificateId, expiredAt,
                 fio, enFio, recoveryDate, passport, enPassport, birthDate);
 
-        //String str = historyFileInputOutput.readFile();
+        String str = historyFileInputOutput.readFile();
         //Toast.makeText(this, str, Toast.LENGTH_LONG).show();
 
     }
