@@ -271,16 +271,22 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     private void checkPotentialCertificateReuse(){
 
         String history = historyFileInputOutput.readFile();
-        historyFileParser.convertHistoryToArrayList(history);
 
-        for (int i=0; i<historyFileParser.getQuickResponseCodeHistoryItemArrayList().size(); i++){
+        if (!history.isEmpty()) {
+            historyFileParser.convertHistoryToArrayList(history);
 
-            if (historyFileParser.getQuickResponseCodeHistoryItemArrayList().get(i).getQrCodeType() == 3 &&
-                    historyFileParser.getQuickResponseCodeHistoryItemArrayList().get(i).getCertificateId() == certificateId)
-                certificateReuse = true;
+            for (int i = 0; i < historyFileParser.getQuickResponseCodeHistoryItemArrayList().size(); i++) {
+
+                if (historyFileParser.getQuickResponseCodeHistoryItemArrayList().get(i).getQrCodeType() == 3 &&
+                        historyFileParser.getQuickResponseCodeHistoryItemArrayList().get(i).getCertificateId().equals(certificateId)) {
+                    certificateReuse = true;
+                    System.out.println("potential reuse!");
+                    break;
+                }
                 //TODO доделать возможный поиск переиспользования
 
 
+            }
         }
 
     }
@@ -296,7 +302,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         historyFileInputOutput.writeValidQrToFile(3, certificateReuse, type, title, status, certificateId, expiredAt,
                 fio, enFio, recoveryDate, passport, enPassport, birthDate);
 
-        String str = historyFileInputOutput.readFile();
+        //String str = historyFileInputOutput.readFile();
         //Toast.makeText(this, str, Toast.LENGTH_LONG).show();
 
     }

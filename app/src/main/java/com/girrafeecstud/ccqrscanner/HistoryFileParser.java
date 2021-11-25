@@ -31,8 +31,6 @@ public class HistoryFileParser {
             historyStrings.set(i, historyStrings.get(i).replaceAll("\\]", ""));
         }
 
-        if (!history.isEmpty()) {
-            //TODO не заходит сюда вообще. ИСПРАВИТЬ!!!
             for (int i = 0; i < historyStrings.size(); i++) {
 
                 if (historyStrings.get(i).charAt(0) == '1' || historyStrings.get(i).charAt(0) == '2')
@@ -40,7 +38,6 @@ public class HistoryFileParser {
                 else
                     addValidContentToObject(historyStrings.get(i));
             }
-        }
 
     }
 
