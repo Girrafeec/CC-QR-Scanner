@@ -20,7 +20,7 @@ public class HistoryFileParser {
     // procedure to parse string with scan history and convert it to array list with objects
     public void convertHistoryToArrayList(String history){
 
-        ArrayList<String> historyStrings = new ArrayList<>(Arrays.asList(history.split("\n")));
+        ArrayList<String> historyStrings = new ArrayList<>(Arrays.asList(history.split("\n\n")));
 
         //Log.i("ar size", String.valueOf(historyStrings.size()));
         //for (int i=0; i<historyStrings.size();i++)
@@ -32,7 +32,6 @@ public class HistoryFileParser {
         }
 
             for (int i = 0; i < historyStrings.size(); i++) {
-
                 if (historyStrings.get(i).charAt(0) == '1' || historyStrings.get(i).charAt(0) == '2')
                     addInvalidContentToObject(historyStrings.get(i));
                 else
@@ -46,7 +45,8 @@ public class HistoryFileParser {
 
         ArrayList<String> parsedQrScanResult = new ArrayList<>(Arrays.asList(str.split("\t")));
 
-        quickResponseCodeHistoryItemArrayList.add(new QuickResponseCodeHistoryItem(Integer.valueOf(parsedQrScanResult.get(0)), parsedQrScanResult.get(1)));
+        quickResponseCodeHistoryItemArrayList.add(new QuickResponseCodeHistoryItem(Integer.valueOf(parsedQrScanResult.get(0)),
+                parsedQrScanResult.get(1), parsedQrScanResult.get(2)));
 
     }
 

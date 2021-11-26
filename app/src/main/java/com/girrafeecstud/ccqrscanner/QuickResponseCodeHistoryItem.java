@@ -20,16 +20,20 @@ public class QuickResponseCodeHistoryItem {
     private String enPassport = "";
     private String birthDate = "";
 
+    private String time = "";
+
     QuickResponseCodeURL quickResponseCodeURL = new QuickResponseCodeURL();
 
     // Constructor for qr code with content without url or with invalid url
-    public QuickResponseCodeHistoryItem(int qrCodeType, String content){
+    public QuickResponseCodeHistoryItem(int qrCodeType, String content, String time){
         if (!quickResponseCodeURL.isURL(content))
             this.content = content;
         else
             this.url = content;
         imgStatus = "RED";
         this.qrCodeType = qrCodeType;
+        this.time = time;
+         //TODO
     }
 
     // Constructor for qr code with valid certificate url
@@ -119,5 +123,9 @@ public class QuickResponseCodeHistoryItem {
 
     public String getBirthDate() {
         return birthDate;
+    }
+
+    public String getTime(){
+        return time;
     }
 }

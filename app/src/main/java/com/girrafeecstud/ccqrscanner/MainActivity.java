@@ -28,6 +28,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.zxing.Result;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
 
     //TODO увеличение/уменьшение зума камеры
@@ -168,15 +171,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkContent(String str){
 
+        //TODO добавить время сканирования кода
+
+        Date currentTime = Calendar.getInstance().getTime();
+
+        String scanTime = String.valueOf(currentTime.getHours());
+        scanTime += ":" + String.valueOf(currentTime.getMinutes());
+
         if (!quickResponseCodeURL.isURL(str)) {
-            historyFileInputOutput.writeInvalidQrToFile(1, str);
+            historyFileInputOutput.writeInvalidQrToFile(1, str, scanTime);
             //Toast.makeText(this, "QR does not contain URL", Toast.LENGTH_SHORT).show();
             showNotSuccessScanResultAlertDialog(SCAN_RESULT_NOT_URL);
             return;
         }
 
         if (!quickResponseCodeURL.isValidURL(str)) {
-            historyFileInputOutput.writeInvalidQrToFile(2, str);
+            historyFileInputOutput.writeInvalidQrToFile(2, str, scanTime);
             showNotSuccessScanResultAlertDialog(SCAN_RESULT_INVALID_URL);
             return;
         }

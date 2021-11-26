@@ -283,8 +283,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
                     System.out.println("potential reuse!");
                     break;
                 }
-                //TODO доделать возможный поиск переиспользования
-
+                //TODO доделать возможный поиск переиспользовани
 
             }
         }
@@ -339,6 +338,8 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
             // 2 тип
             //https://www.gosuslugi.ru/vaccine/cert/verify/0fcfc8a8-945d-4b2e-a6ab-691c3d6fd67d - url
             //https://www.gosuslugi.ru/api/vaccine/v1/cert/verify/0fcfc8a8-945d-4b2e-a6ab-691c3d6fd67d - json of vacc from paper
+
+            //TODO проверить ссылку с status
 
             String[] urlElementsArray = websiteUrl.split("/");
 

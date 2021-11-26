@@ -2,6 +2,8 @@ package com.girrafeecstud.ccqrscanner;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,12 +15,19 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
 
+    private RecyclerView qrHistory;
+
+    private HistoryFileInputOutput historyFileInputOutput = new HistoryFileInputOutput(this);
+    private HistoryFileParser historyFileParser = new HistoryFileParser();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_responce_code_history);
 
         initUiElements();
+
+        addScannedHistory();
 
         // Set mainActivity selected in bottom nav bar
         bottomNavigationView.setSelectedItemId(R.id.quickResponseCodeHistoryActivity);
@@ -45,6 +54,21 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity {
     }
 
     private void initUiElements(){
+        qrHistory = findViewById(R.id.qrHistoryRecView);
         bottomNavigationView = findViewById(R.id.mainNavigationMenu);
+    }
+
+    private void addScannedHistory(){
+
+        String history = historyFileInputOutput.readFile();
+
+        if (!history.isEmpty()) {
+            QuickResponseCodeHistoryRecViewAdapter adapter = new QuickResponseCodeHistoryRecViewAdapter();
+            historyFileParser.getQuickResponseCodeHistoryItemArrayList().clear();
+            historyFileParser.convertHistoryToArrayList(history);
+            adapter.setQuickResponseCodeHistoryItemArrayList(historyFileParser.getQuickResponseCodeHistoryItemArrayList());
+            qrHistory.setAdapter(adapter);
+            qrHistory.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        }
     }
 }

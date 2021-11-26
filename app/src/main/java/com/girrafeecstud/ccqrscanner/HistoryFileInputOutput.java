@@ -51,13 +51,15 @@ public class HistoryFileInputOutput {
         }
     }
 
-    public void writeInvalidQrToFile(int qrCodeType, String content){
+    public void writeInvalidQrToFile(int qrCodeType, String content, String time){
 
         final File file = context.getFileStreamPath(fileName);
 
         String history = readFile();
 
-        String str = "[" + qrCodeType + "]" + "\t" + "[" + content + "]";
+        String str = "[" + qrCodeType + "]" + "\t" + "[" + content + "]" + "\t" + "[" + time + "]";
+
+        System.out.println("invalid str" + str);
 
         FileOutputStream fileOutputStream = null;
 
@@ -69,7 +71,7 @@ public class HistoryFileInputOutput {
         BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
 
         try {
-            bufferedWriter.write(history + str + "\r\n");
+            bufferedWriter.write(history + str + "\r\n\n");
         } catch (IOException exception) {
             exception.printStackTrace();
         }
@@ -107,7 +109,7 @@ public class HistoryFileInputOutput {
         BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
 
         try {
-            bufferedWriter.write(history + str + "\r\n");
+            bufferedWriter.write(history + str + "\r\n\n");
         } catch (IOException exception) {
             exception.printStackTrace();
         }
