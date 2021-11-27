@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -16,9 +19,13 @@ import java.util.Comparator;
 
 public class QuickResponseCodeHistoryActivity extends AppCompatActivity {
 
+    private long backPressedTime;
+
     private BottomNavigationView bottomNavigationView;
 
     private RecyclerView qrHistory;
+
+    private Toast backToast;
 
     private HistoryFileInputOutput historyFileInputOutput = new HistoryFileInputOutput(this);
     private HistoryFileParser historyFileParser = new HistoryFileParser();
@@ -54,6 +61,22 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            backToast.cancel();
+            finishAffinity();
+            return;
+        }
+
+        backToast = Toast.makeText(this, "Нажмите ещё раз для выхода из приложения", Toast.LENGTH_SHORT);
+        backToast.show();
+
+        backPressedTime = System.currentTimeMillis();
     }
 
     private void initUiElements(){

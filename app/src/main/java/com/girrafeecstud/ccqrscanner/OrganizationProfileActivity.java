@@ -6,12 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class OrganizationProfileActivity extends AppCompatActivity {
 
+    private long backPressedTime;
+
     private BottomNavigationView bottomNavigationView;
+
+    private Toast backToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,22 @@ public class OrganizationProfileActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            backToast.cancel();
+            finishAffinity();
+            return;
+        }
+
+        backToast = Toast.makeText(this, "Нажмите ещё раз для выхода из приложения", Toast.LENGTH_SHORT);
+        backToast.show();
+
+        backPressedTime = System.currentTimeMillis();
     }
 
     private void initUiElements(){

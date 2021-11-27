@@ -48,9 +48,13 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_SCAN_RESULT_VALID_URL = "com.girrafeecstud.ccqrscanner.EXTRA_SCAN_RESULT_VALID_URL";
 
+    private long backPressedTime;
+
     private TextView url;
 
     private Dialog notSuccessScanResultDialog;
+
+    private Toast backToast;
 
     private QuickResponseCodeURL quickResponseCodeURL = new QuickResponseCodeURL();
     private HistoryFileInputOutput historyFileInputOutput = new HistoryFileInputOutput(MainActivity.this);
@@ -97,6 +101,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            backToast.cancel();
+            finishAffinity();
+            return;
+        }
+
+        backToast = Toast.makeText(this, "Нажмите ещё раз для выхода из приложения", Toast.LENGTH_SHORT);
+        backToast.show();
+
+        backPressedTime = System.currentTimeMillis();
     }
 
     private void codeScannerProc(){
