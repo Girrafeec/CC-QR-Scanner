@@ -45,6 +45,8 @@ import java.net.URLClassLoader;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
@@ -201,7 +203,6 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     private boolean isConnectedToInternet(){
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(CertificateActivity.CONNECTIVITY_SERVICE);
-
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
 
     }
@@ -293,13 +294,17 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     // save certificate data to local memory file
     private void saveCertificateToMemory() {
 
+        Date currentTime = Calendar.getInstance().getTime();
+        String scanTime = String.valueOf(currentTime);
+        scanTime = scanTime.replace(" ", "\\");
+
         if (recoveryDate.isEmpty())
             recoveryDate = "0";
         if (enPassport.isEmpty())
             enPassport = "0";
 
         historyFileInputOutput.writeValidQrToFile(3, certificateReuse, type, title, status, certificateId, expiredAt,
-                fio, enFio, recoveryDate, passport, enPassport, birthDate);
+                fio, enFio, recoveryDate, passport, enPassport, birthDate, scanTime);
 
         //String str = historyFileInputOutput.readFile();
         //Toast.makeText(this, str, Toast.LENGTH_LONG).show();
