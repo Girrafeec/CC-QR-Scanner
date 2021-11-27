@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Date;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -51,13 +52,13 @@ public class HistoryFileInputOutput {
         }
     }
 
-    public void writeInvalidQrToFile(int qrCodeType, String content, String time){
+    public void writeInvalidQrToFile(int qrCodeType, String content, String currentTime){
 
         final File file = context.getFileStreamPath(fileName);
 
         String history = readFile();
 
-        String str = "[" + qrCodeType + "]" + "\t" + "[" + content + "]" + "\t" + "[" + time + "]";
+        String str = "[" + qrCodeType + "]" + "\t" + "[" + content + "]" + "\t" + "[" + currentTime + "]";
 
         System.out.println("invalid str" + str);
 

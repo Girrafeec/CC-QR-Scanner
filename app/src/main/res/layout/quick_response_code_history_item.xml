@@ -21,16 +21,15 @@
                 android:id="@+id/scannedStatusImg"
                 android:src="@drawable/ic__891023_cancel_cercle_close_delete_dismiss_icon"/>
 
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/scannedTimeTxt"
                 android:layout_marginLeft="10dp"
-                android:inputType="time"
                 android:text="12:30"
                 android:textSize="20dp"
-                android:cursorVisible="false"
-                android:layout_gravity="center"/>
+                android:textColor="@color/black"
+                android:gravity="center"/>
 
             <TextView
                 android:layout_width="wrap_content"

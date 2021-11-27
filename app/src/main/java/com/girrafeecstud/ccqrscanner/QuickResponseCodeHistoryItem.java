@@ -1,5 +1,8 @@
 package com.girrafeecstud.ccqrscanner;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 public class QuickResponseCodeHistoryItem {
 
     private int qrCodeType = 0; // 1 - not url; 2 - not valid url; 3 - certificate url
@@ -20,12 +23,12 @@ public class QuickResponseCodeHistoryItem {
     private String enPassport = "";
     private String birthDate = "";
 
-    private String time = "";
+    private LocalDateTime time;
 
     QuickResponseCodeURL quickResponseCodeURL = new QuickResponseCodeURL();
 
     // Constructor for qr code with content without url or with invalid url
-    public QuickResponseCodeHistoryItem(int qrCodeType, String content, String time){
+    public QuickResponseCodeHistoryItem(int qrCodeType, String content, LocalDateTime time){
         if (!quickResponseCodeURL.isURL(content))
             this.content = content;
         else
@@ -125,7 +128,7 @@ public class QuickResponseCodeHistoryItem {
         return birthDate;
     }
 
-    public String getTime(){
+    public LocalDateTime getTime(){
         return time;
     }
 }

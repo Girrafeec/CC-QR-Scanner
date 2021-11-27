@@ -174,9 +174,9 @@ public class MainActivity extends AppCompatActivity {
         //TODO добавить время сканирования кода
 
         Date currentTime = Calendar.getInstance().getTime();
+        String scanTime = String.valueOf(currentTime);
+        scanTime = scanTime.replace(" ", "\\");
 
-        String scanTime = String.valueOf(currentTime.getHours());
-        scanTime += ":" + String.valueOf(currentTime.getMinutes());
 
         if (!quickResponseCodeURL.isURL(str)) {
             historyFileInputOutput.writeInvalidQrToFile(1, str, scanTime);

@@ -50,7 +50,8 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
                 holder.scannedStatus.setText("Повторное использование");
         }
 
-        holder.scannedTime.setText(quickResponseCodeHistoryItemArrayList.get(currentPosition).getTime());
+        holder.scannedTime.setText(quickResponseCodeHistoryItemArrayList.get(currentPosition).getTime().getHour()
+                + ":" + quickResponseCodeHistoryItemArrayList.get(currentPosition).getTime().getMinute());
 
 
     }
@@ -62,8 +63,7 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView scannedStatus;
-        private EditText scannedTime;
+        private TextView scannedStatus, scannedTime;
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);

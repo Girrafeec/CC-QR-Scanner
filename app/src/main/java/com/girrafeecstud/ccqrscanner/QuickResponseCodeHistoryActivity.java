@@ -11,6 +11,9 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.sql.Date;
+import java.util.Comparator;
+
 public class QuickResponseCodeHistoryActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
@@ -64,8 +67,8 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity {
 
         if (!history.isEmpty()) {
             QuickResponseCodeHistoryRecViewAdapter adapter = new QuickResponseCodeHistoryRecViewAdapter();
-            historyFileParser.getQuickResponseCodeHistoryItemArrayList().clear();
             historyFileParser.convertHistoryToArrayList(history);
+            historyFileParser.sortArrayByTime();
             adapter.setQuickResponseCodeHistoryItemArrayList(historyFileParser.getQuickResponseCodeHistoryItemArrayList());
             qrHistory.setAdapter(adapter);
             qrHistory.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
