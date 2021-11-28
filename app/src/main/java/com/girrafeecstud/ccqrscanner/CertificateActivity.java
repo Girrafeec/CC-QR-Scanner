@@ -242,6 +242,23 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
             type = "VACCINE_CERT";
         }
 
+        if (type.equals("VACCINE_CERT")) {
+            type = "Сертификат вакцинации";
+            return;
+        }
+        if (type.equals("TEMPORARY_CERT")) {
+            type = "Временный сертификат вакцинации";
+            return;
+        }
+        if (type.equals("COVID_TEST")) {
+            type = "ПЦР-тест";
+            return;
+        }
+        if (type.equals("ILLNESS_FACT")) {
+            type = "Сведения о перенесённом заболевании";
+            return;
+        }
+
     }
 
     // set json data to ui elements

@@ -7,6 +7,7 @@ public class QuickResponseCodeHistoryItem {
 
     private int qrCodeType = 0; // 1 - not url; 2 - not valid url; 3 - certificate url
     private boolean certificateReuse = false;
+    private boolean isVisible = false;
     private String content = "";
     private String imgStatus = "";
     private String url = "";
@@ -132,6 +133,14 @@ public class QuickResponseCodeHistoryItem {
 
     public String getValidFrom(){
         return validFrom;
+    }
+
+    public void setVisible(boolean isVisible){
+        this.isVisible = isVisible;
+    }
+
+    public boolean isVisible(){
+        return isVisible;
     }
 
     public LocalDateTime getTime(){
