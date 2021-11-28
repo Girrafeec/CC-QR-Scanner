@@ -82,13 +82,15 @@ public class HistoryFileParser {
 
         ArrayList<String> parsedQrScanResult = new ArrayList<>(Arrays.asList(str.split("\t")));
 
+        System.out.println(parsedQrScanResult);
+
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("E\\MMM\\d\\HH:mm:ss\\z\\yyyy", Locale.US);
-        LocalDateTime date = LocalDateTime.parse(parsedQrScanResult.get(13), dtf);
+        LocalDateTime date = LocalDateTime.parse(parsedQrScanResult.get(14), dtf);
 
         quickResponseCodeHistoryItemArrayList.add(new QuickResponseCodeHistoryItem(Integer.valueOf(parsedQrScanResult.get(0)),
                 Boolean.valueOf(parsedQrScanResult.get(1)), parsedQrScanResult.get(2), parsedQrScanResult.get(3), parsedQrScanResult.get(4),
                 parsedQrScanResult.get(5), parsedQrScanResult.get(6), parsedQrScanResult.get(7), parsedQrScanResult.get(8), parsedQrScanResult.get(9),
-                parsedQrScanResult.get(10), parsedQrScanResult.get(11), parsedQrScanResult.get(12), date));
+                parsedQrScanResult.get(10), parsedQrScanResult.get(11), parsedQrScanResult.get(12), parsedQrScanResult.get(13), date));
 
     }
 

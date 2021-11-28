@@ -179,8 +179,43 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/validFromLinLay"
                 android:orientation="horizontal"
-                android:labelFor="@+id/certificateCardLinLay"
+                android:labelFor="@+id/certificateRecoveryDateLinlay"
+                android:gravity="center_horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_calendar_today_24"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="20dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/certificateValidFromDateTxt"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/oval_text_white_background"
+                    android:text="Действует с: "
+                    android:textColor="@android:color/darker_gray"
+                    android:textStyle="normal"
+                    android:textSize="15dp"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:labelFor="@+id/validFromLinLay"
                 android:gravity="center_horizontal">
 
                 <ImageView

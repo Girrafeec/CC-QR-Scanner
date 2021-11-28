@@ -58,13 +58,13 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class CertificateActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private LinearLayout error, certificateBackground, recoveryDateLinLay;
+    private LinearLayout error, certificateBackground, recoveryDateLinLay, validFromLinLay;
     private Button tryToConnectNetworkAgain;
 
     private TextView jsonStatusTxt;
 
     private TextView titleTxt, statusTxt, certificateIdTxt, recoveryDateTxt, expiredAtTxt
-            , fioTxt, pasportTxt, enPasportTxt, birthDateTxt;
+            , fioTxt, pasportTxt, enPasportTxt, birthDateTxt, validFromTxt;
 
     private ProgressBar progressBar;
 
@@ -83,6 +83,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     private String enPassport = "";
     private String birthDate = "";
     private String stuff = "";
+    private String validFrom = "";
 
     private static boolean jsonSucceeed = false;
     private boolean certificateReuse = false;
@@ -167,6 +168,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         error = findViewById(R.id.certificateActivityErrorLinLay);
         certificateBackground = findViewById(R.id.certificateCardLinLay);
         recoveryDateLinLay = findViewById(R.id.certificateRecoveryDateLinlay);
+        validFromLinLay = findViewById(R.id.validFromLinLay);
 
         tryToConnectNetworkAgain = findViewById(R.id.certActivityTryConnectToNetworkAgainBtn);
 
@@ -182,6 +184,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         titleTxt = findViewById(R.id.certificateTitleTxt);
         expiredAtTxt = findViewById(R.id.certificateExpiredDateDateTxt);
         recoveryDateTxt = findViewById(R.id.certificateRecoveryDateTxt);
+        validFromTxt = findViewById(R.id.certificateValidFromDateTxt);
 
     }
 
@@ -227,14 +230,17 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         enPassport= parseCertificateJson.getEnPassport();
         birthDate= parseCertificateJson.getBirthDate();
         stuff = parseCertificateJson.getStuff();
+        validFrom  =parseCertificateJson.getValidFrom();
 
         if (status.equals("1"))
             status = "Действителен";
         else
-            status = "Недействителен";
+            status = "Не действителен";
 
-        if (title.isEmpty() && !stuff.isEmpty())
-            title = "Сертификат о вакцинации COVID-19";
+        if (title.isEmpty() && type.isEmpty() && !stuff.isEmpty()) {
+            title = "Сертификат вакцинации COVID-19";
+            type = "VACCINE_CERT";
+        }
 
     }
 
@@ -260,8 +266,13 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
             recoveryDateTxt.setText(recoveryDateTxt.getText() + recoveryDate);
         }
 
+        if (!validFrom.isEmpty()) {
+            validFromLinLay.setVisibility(View.VISIBLE);
+            validFromTxt.setText(validFromTxt.getText() + validFrom);
+        }
+
         statusTxt.setText(status);
-        if (status.equals("Недействителен"))
+        if (status.equals("Не действителен"))
             certificateBackground.setBackground(ContextCompat.getDrawable(this, R.drawable.red_rounded_recktangle));
         else
             certificateBackground.setBackground(ContextCompat.getDrawable(this, R.drawable.green_rounded_recktangle));
@@ -302,8 +313,10 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
             recoveryDate = "0";
         if (enPassport.isEmpty())
             enPassport = "0";
+        if (validFrom.isEmpty())
+            validFrom = "0";
 
-        historyFileInputOutput.writeValidQrToFile(3, certificateReuse, type, title, status, certificateId, expiredAt,
+        historyFileInputOutput.writeValidQrToFile(3, certificateReuse, type, title, status, certificateId, expiredAt, validFrom,
                 fio, enFio, recoveryDate, passport, enPassport, birthDate, scanTime);
 
         //String str = historyFileInputOutput.readFile();
@@ -344,6 +357,10 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
             //https://www.gosuslugi.ru/vaccine/cert/verify/0fcfc8a8-945d-4b2e-a6ab-691c3d6fd67d - url
             //https://www.gosuslugi.ru/api/vaccine/v1/cert/verify/0fcfc8a8-945d-4b2e-a6ab-691c3d6fd67d - json of vacc from paper
 
+            // 3 тип
+            //https://www.gosuslugi.ru/covid-cert/status/e4d9657a-48fe-477b-9777-c8053a2bdfc3?lang=ru - url
+            //https://www.gosuslugi.ru/api/covid-cert/v2/cert/status/e4d9657a-48fe-477b-9777-c8053a2bdfc3?lang=ru - json
+
             //TODO проверить ссылку с status
 
             String[] urlElementsArray = websiteUrl.split("/");
@@ -355,8 +372,10 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
             if (websiteUrl.contains("vaccine")) {
                 jsonUrl = ar.get(0) + "//" + ar.get(1) + "/api/" + ar.get(2) + "/v1/" + ar.get(3) + "/" + ar.get(4) + "/" + ar.get(5);
-            }else if (websiteUrl.contains("covid-cert")) {
+            }else if (websiteUrl.contains("covid-cert") && !websiteUrl.contains("status")) {
                 jsonUrl = ar.get(0) + "//" + ar.get(1) + "/api/" + ar.get(2) + "/v3/cert/check/" + ar.get(4);
+            }else if (websiteUrl.contains("covid-cert") && websiteUrl.contains("status")){
+                jsonUrl = ar.get(0) + "//" + ar.get(1) + "/api/" + ar.get(2) + "/v2/cert/status/" + ar.get(4);
             }
 
             Log.i("json url: ", jsonUrl);

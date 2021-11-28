@@ -21,6 +21,7 @@ public class ParseCertificateJson {
     private String passport = "";
     private String enPassport = "";
     private String birthDate = "";
+    private String validFrom = "";
 
     // в json, где нет items нет типа сертификата, но в stuff записан тип вакцины
     private String stuff = "";
@@ -79,6 +80,10 @@ public class ParseCertificateJson {
         return birthDate;
     }
 
+    public String getValidFrom(){
+        return validFrom;
+    }
+
     public String getStuff() {
         return stuff;
     }
@@ -127,16 +132,18 @@ public class ParseCertificateJson {
 
         try {
             JSONArray jsonArray = jsonObject.getJSONArray("items");
+            JSONObject jsonObjectType = null;
             JSONArray extraAttrs = new JSONArray();
 
             for (int i=0; i < jsonArray.length(); i++){
 
-                JSONObject jsonObjectType = jsonArray.getJSONObject(i);
+                jsonObjectType = jsonArray.getJSONObject(i);
                 type = jsonObjectType.getString("type");
                 title = jsonObjectType.getString("title");
                 status = jsonObjectType.getString("status");
                 certificateId = jsonObjectType.getString("unrzFull");
                 expiredAt = jsonObjectType.getString("expiredAt");
+                //validFrom = jsonObjectType.getString("validFrom");
 
                 extraAttrs = jsonObjectType.getJSONArray("attrs");
                 Log.i("extra", extraAttrs.toString());
@@ -158,6 +165,8 @@ public class ParseCertificateJson {
                 parseExtraData(extraDataType, extraDataTitle, extraAttrsArrayList.get(i));
 
             }
+
+            validFrom = jsonObjectType.getString("validFrom");
 
         } catch (JSONException e) {
             e.printStackTrace();
