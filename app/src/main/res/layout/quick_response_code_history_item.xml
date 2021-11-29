@@ -63,182 +63,184 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/qrHistoryItemInfoLinLay"
-        android:orientation="vertical"
-        android:layout_marginBottom="10dp"
-        android:visibility="gone">
+        android:layout_marginBottom="10dp">
 
         <TextView
             android:id="@+id/historyItemStatusTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:text="Статус: "
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="17dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:visibility="visible"/>
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/historyItemUrlTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/historyItemStatusTxt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:text="Ссылка: "
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="17dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:visibility="visible"/>
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/historyItemContentTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/historyItemUrlTxt"
             android:text="Содержимое: "
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="17dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:visibility="visible"/>
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/historyItemCertificateTypeTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/historyItemContentTxt"
             android:text="Тип сертификата: "
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="17dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:visibility="visible"/>
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/historyItemCertificateStatusTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/historyItemCertificateTypeTxt"
             android:text="Статус сертификата: "
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="17dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:visibility="visible"/>
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/historyItemCertificateIdTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/historyItemCertificateStatusTxt"
             android:text="Номер сертификата: "
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="17dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:visibility="visible"/>
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/historyItemRecoveryDateTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/historyItemCertificateIdTxt"
             android:text="Дата выздоровления: "
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="17dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:visibility="visible"/>
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/historyItemValidTimeTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/historyItemRecoveryDateTxt"
             android:text="Действует с: "
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="17dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:visibility="visible"/>
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/historyItemExpiredAtTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/historyItemValidTimeTxt"
             android:text="Действует до: "
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="17dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:visibility="visible"/>
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/historyItemFioTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/historyItemExpiredAtTxt"
             android:text="ФИО: "
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="17dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:visibility="visible"/>
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/historyItemEnFioTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/historyItemFioTxt"
             android:text="ФИО (English): "
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="17dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:visibility="visible"/>
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/historyItemBirthDateTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/historyItemEnFioTxt"
             android:text="Дата рождения: "
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="17dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:visibility="visible"/>
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/historyItemPassportTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/historyItemBirthDateTxt"
             android:text="Паспорт: "
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="17dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:visibility="visible"/>
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/historyItemEnPassportTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/historyItemPassportTxt"
             android:text="Загранпаспорт: "
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="17dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:visibility="visible"/>
+            android:layout_marginTop="10dp" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

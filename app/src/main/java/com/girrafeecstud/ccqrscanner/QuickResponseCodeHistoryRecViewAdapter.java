@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -21,12 +22,12 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
     private ArrayList<QuickResponseCodeHistoryItem> quickResponseCodeHistoryItemArrayList
             = new ArrayList<>();
 
-    private OnQrHistoryItemDropListener onQrHistoryItemDropListener;
+    //private OnQrHistoryItemDropListener onQrHistoryItemDropListener;
     private Context context;
 
-    public QuickResponseCodeHistoryRecViewAdapter(Context context, OnQrHistoryItemDropListener onQrHistoryItemDropListener){
+    public QuickResponseCodeHistoryRecViewAdapter(Context context/*, OnQrHistoryItemDropListener onQrHistoryItemDropListener*/){
         this.context = context;
-        this.onQrHistoryItemDropListener = onQrHistoryItemDropListener;
+        //this.onQrHistoryItemDropListener = onQrHistoryItemDropListener;
     }
 
     public void setQuickResponseCodeHistoryItemArrayList(ArrayList<QuickResponseCodeHistoryItem> quickResponseCodeHistoryItemArrayList) {
@@ -47,8 +48,9 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
 
         int currentPosition = holder.getAdapterPosition();
 
+
         // part to expand the qr history item info
-        boolean isVisible = quickResponseCodeHistoryItemArrayList.get(currentPosition).isVisible();
+        boolean isVisible = quickResponseCodeHistoryItemArrayList.get(currentPosition).getItemInfoVisibility();
 
         if (!isVisible) {
             holder.qrHistoryItem.setVisibility(View.GONE);
@@ -58,6 +60,7 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
             holder.qrHistoryItem.setVisibility(View.VISIBLE);
             holder.expandItem.setImageResource(R.drawable.ic_baseline_arrow_drop_up_24);
         }
+
 
         if (quickResponseCodeHistoryItemArrayList.get(currentPosition).getQrCodeType() == 1)
             setInvalidContentData(holder, currentPosition);
@@ -75,7 +78,6 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
         else
             holder.scannedTime.setText(quickResponseCodeHistoryItemArrayList.get(currentPosition).getTime().getHour()
                     + ":" + quickResponseCodeHistoryItemArrayList.get(currentPosition).getTime().getMinute());
-
     }
 
     // procedure to set expanded info of qr history item for invalid qr
@@ -85,6 +87,8 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
         holder.itemStatus.setText("Статус: " + "Некорректный код");
         holder.itemContent.setText("Содержимое: " + quickResponseCodeHistoryItemArrayList.get(currentPosition).getContent());
 
+        holder.itemStatus.setVisibility(View.VISIBLE);
+        holder.itemContent.setVisibility(View.VISIBLE);
         holder.itemUrl.setVisibility(View.GONE);
         holder.itemCertType.setVisibility(View.GONE);
         holder.itemCertStatus.setVisibility(View.GONE);
@@ -106,6 +110,8 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
         holder.itemStatus.setText("Статус: " + "Некорректная ссылка");
         holder.itemUrl.setText("Ссылка: " + quickResponseCodeHistoryItemArrayList.get(currentPosition).getUrl());
 
+        holder.itemStatus.setVisibility(View.VISIBLE);
+        holder.itemUrl.setVisibility(View.VISIBLE);
         holder.itemContent.setVisibility(View.GONE);
         holder.itemCertType.setVisibility(View.GONE);
         holder.itemCertStatus.setVisibility(View.GONE);
@@ -148,6 +154,21 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
         holder.itemCertPassport.setText("Паспорт: " + quickResponseCodeHistoryItemArrayList.get(currentPosition).getPassport());
         holder.itemCertBirthDate.setText("Дата рождени: " + quickResponseCodeHistoryItemArrayList.get(currentPosition).getBirthDate());
 
+        holder.itemStatus.setVisibility(View.VISIBLE);
+        holder.itemContent.setVisibility(View.GONE);
+        holder.itemUrl.setVisibility(View.GONE);
+        holder.itemCertType.setVisibility(View.VISIBLE);
+        holder.itemCertStatus.setVisibility(View.VISIBLE);
+        holder.itemCertId.setVisibility(View.VISIBLE);
+        holder.itemCertExpiredAt.setVisibility(View.VISIBLE);
+        holder.itemCertFio.setVisibility(View.VISIBLE);
+        holder.itemCertEnFio.setVisibility(View.VISIBLE);
+        holder.itemCertPassport.setVisibility(View.VISIBLE);
+        holder.itemCertEnPassport.setVisibility(View.VISIBLE);
+        holder.itemCertRecoveryDate.setVisibility(View.VISIBLE);
+        holder.itemCertBirthDate.setVisibility(View.VISIBLE);
+        holder.itemCertValidTime.setVisibility(View.VISIBLE);
+
         if (quickResponseCodeHistoryItemArrayList.get(currentPosition).getValidFrom().equals("0"))
             holder.itemCertValidTime.setVisibility(View.GONE);
         else
@@ -162,9 +183,6 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
             holder.itemCertEnPassport.setVisibility(View.GONE);
         else
             holder.itemCertEnPassport.setText("Загранпаспорт: " + quickResponseCodeHistoryItemArrayList.get(currentPosition).getEnPassport());
-
-        holder.itemContent.setVisibility(View.GONE);
-        holder.itemUrl.setVisibility(View.GONE);
     }
 
     @Override
@@ -181,7 +199,7 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
                 itemCertExpiredAt, itemCertFio, itemCertEnFio, itemCertPassport, itemCertEnPassport,
                 itemCertRecoveryDate, itemCertBirthDate, itemCertValidTime;
 
-        private LinearLayout qrHistoryItem;
+        private ConstraintLayout qrHistoryItem;
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);
@@ -213,25 +231,30 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
             expandItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (!quickResponseCodeHistoryItemArrayList.get(getAdapterPosition()).isVisible())
-                        quickResponseCodeHistoryItemArrayList.get(getAdapterPosition()).setVisible(true);
+                    if (!quickResponseCodeHistoryItemArrayList.get(getAdapterPosition()).getItemInfoVisibility())
+                        quickResponseCodeHistoryItemArrayList.get(getAdapterPosition()).setItemInfoVisibility(true);
                     else
-                        quickResponseCodeHistoryItemArrayList.get(getAdapterPosition()).setVisible(false);
+                        quickResponseCodeHistoryItemArrayList.get(getAdapterPosition()).setItemInfoVisibility(false);
                     notifyItemChanged(getAdapterPosition());
                 }
             });
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+           /* itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     onQrHistoryItemDropListener.onQrHistoryItemDropClick(getAdapterPosition());
                 }
             });
+
+            */
         }
     }
 
+    /*
     public interface OnQrHistoryItemDropListener{
         public void onQrHistoryItemDropClick(int position);
     }
+
+     */
 
 }

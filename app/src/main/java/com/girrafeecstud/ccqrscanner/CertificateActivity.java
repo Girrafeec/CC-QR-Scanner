@@ -378,8 +378,6 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
             //https://www.gosuslugi.ru/covid-cert/status/e4d9657a-48fe-477b-9777-c8053a2bdfc3?lang=ru - url
             //https://www.gosuslugi.ru/api/covid-cert/v2/cert/status/e4d9657a-48fe-477b-9777-c8053a2bdfc3?lang=ru - json
 
-            //TODO проверить ссылку с status
-
             String[] urlElementsArray = websiteUrl.split("/");
 
             ArrayList<String> ar = new ArrayList<>(Arrays.asList(urlElementsArray));

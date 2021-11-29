@@ -191,8 +191,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkContent(String str){
 
-        //TODO добавить время сканирования кода
-
         Date currentTime = Calendar.getInstance().getTime();
         String scanTime = String.valueOf(currentTime);
         scanTime = scanTime.replace(" ", "\\");

@@ -7,7 +7,7 @@ public class QuickResponseCodeHistoryItem {
 
     private int qrCodeType = 0; // 1 - not url; 2 - not valid url; 3 - certificate url
     private boolean certificateReuse = false;
-    private boolean isVisible = false;
+    private boolean itemInfoVisibility = false;
     private String content = "";
     private String imgStatus = "";
     private String url = "";
@@ -37,7 +37,6 @@ public class QuickResponseCodeHistoryItem {
         imgStatus = "RED";
         this.qrCodeType = qrCodeType;
         this.time = time;
-         //TODO
     }
 
     // Constructor for qr code with valid certificate url
@@ -135,12 +134,12 @@ public class QuickResponseCodeHistoryItem {
         return validFrom;
     }
 
-    public void setVisible(boolean isVisible){
-        this.isVisible = isVisible;
+    public void setItemInfoVisibility(boolean itemInfoVisibility){
+        this.itemInfoVisibility = itemInfoVisibility;
     }
 
-    public boolean isVisible(){
-        return isVisible;
+    public boolean getItemInfoVisibility(){
+        return itemInfoVisibility;
     }
 
     public LocalDateTime getTime(){

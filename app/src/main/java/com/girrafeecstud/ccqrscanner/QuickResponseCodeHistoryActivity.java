@@ -17,7 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.sql.Date;
 import java.util.Comparator;
 
-public class QuickResponseCodeHistoryActivity extends AppCompatActivity implements QuickResponseCodeHistoryRecViewAdapter.OnQrHistoryItemDropListener{
+public class QuickResponseCodeHistoryActivity extends AppCompatActivity /*implements QuickResponseCodeHistoryRecViewAdapter.OnQrHistoryItemDropListener*/{
 
     private long backPressedTime;
 
@@ -30,10 +30,12 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity implemen
     private HistoryFileInputOutput historyFileInputOutput = new HistoryFileInputOutput(this);
     private HistoryFileParser historyFileParser = new HistoryFileParser();
 
+    /*
     @Override
     public void onQrHistoryItemDropClick(int position) {
 
     }
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +96,7 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity implemen
         String history = historyFileInputOutput.readFile();
 
         if (!history.isEmpty()) {
-            QuickResponseCodeHistoryRecViewAdapter adapter = new QuickResponseCodeHistoryRecViewAdapter(this, this);
+            QuickResponseCodeHistoryRecViewAdapter adapter = new QuickResponseCodeHistoryRecViewAdapter(this/*, this*/);
             historyFileParser.convertHistoryToArrayList(history);
             historyFileParser.sortArrayByTime();
             adapter.setQuickResponseCodeHistoryItemArrayList(historyFileParser.getQuickResponseCodeHistoryItemArrayList());
