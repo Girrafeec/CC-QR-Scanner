@@ -5,17 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Dialog;
+import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Html;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.sql.Date;
-import java.util.Comparator;
 
 public class QuickResponseCodeHistoryActivity extends AppCompatActivity /*implements QuickResponseCodeHistoryRecViewAdapter.OnQrHistoryItemDropListener*/{
 
@@ -25,11 +24,13 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity /*implem
 
     private RecyclerView qrHistory;
 
+    private androidx.appcompat.widget.Toolbar toolbar;
+
     private Toast backToast;
 
     private HistoryFileInputOutput historyFileInputOutput = new HistoryFileInputOutput(this);
     private HistoryFileParser historyFileParser = new HistoryFileParser();
-
+    private QuickResponseCodeHistoryRecViewAdapter adapter;
     /*
     @Override
     public void onQrHistoryItemDropClick(int position) {
@@ -42,6 +43,7 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity /*implem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_responce_code_history);
 
+        editActionBar();
         initUiElements();
 
         addScannedHistory();
@@ -89,6 +91,34 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity /*implem
     private void initUiElements(){
         qrHistory = findViewById(R.id.qrHistoryRecView);
         bottomNavigationView = findViewById(R.id.mainNavigationMenu);
+        //toolbar = findViewById(R.id.qrHIstoryItemToolbar);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.qr_history_action_bar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.qrHistorySettings:
+                break;
+            case R.id.deleteQrHistory:
+                clearQrHistory();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void editActionBar(){
+        getSupportActionBar().setTitle("История сканирования");
+        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#0065b1\">" + "История сканирования" + "</font>"));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.gos_white)));
+        //getSupportActionBar().men
     }
 
     private void addScannedHistory(){
@@ -105,4 +135,13 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity /*implem
         }
     }
 
+    // procedure to clear qr history from file
+    private void clearQrHistory(){
+        //TODO вылетело приложение
+        if (adapter.getItemCount() != 0){
+            //historyFileInputOutput.clearFile();
+            //historyFileParser.getQuickResponseCodeHistoryItemArrayList().clear();
+            //adapter.clear();
+        }
+    }
 }

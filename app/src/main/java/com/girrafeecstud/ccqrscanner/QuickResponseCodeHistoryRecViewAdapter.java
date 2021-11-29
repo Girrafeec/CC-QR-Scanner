@@ -190,6 +190,13 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
         return quickResponseCodeHistoryItemArrayList.size();
     }
 
+    // procedure to clear rec view adapter
+    public void clear() {
+        int size = quickResponseCodeHistoryItemArrayList.size();
+        quickResponseCodeHistoryItemArrayList.clear();
+        notifyItemRangeRemoved(0, size);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         private ImageButton expandItem;

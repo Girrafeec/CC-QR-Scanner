@@ -165,6 +165,36 @@ public class HistoryFileInputOutput {
         return history;
     }
 
+    // procedure clears file with qr history
+    public void clearFile(){
+        final File file = context.getFileStreamPath(fileName);
+
+        String history = readFile();
+
+        FileOutputStream fileOutputStream = null;
+
+        try {
+            fileOutputStream = new FileOutputStream(file);
+        } catch (FileNotFoundException exception) {
+            exception.printStackTrace();
+        }
+        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
+
+        try {
+            bufferedWriter.write("");
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+        try {
+            bufferedWriter.flush();
+            fileOutputStream.flush();
+            bufferedWriter.close();
+            fileOutputStream.close();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
     // function to check if the file exists
     private static boolean fileExists(){
         File file = context.getFileStreamPath(fileName);

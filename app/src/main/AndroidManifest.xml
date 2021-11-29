@@ -16,7 +16,7 @@
         <activity android:name=".OrganizationProfileActivity"></activity>
         <activity
             android:name=".QuickResponseCodeHistoryActivity"
-            android:exported="true" />
+            android:exported="true"/>
         <activity android:name=".CertificateActivity" />
         <activity
             android:name=".MainActivity"
