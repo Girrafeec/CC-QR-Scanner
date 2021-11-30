@@ -145,18 +145,21 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity implemen
     }
 
     private void editActionBar(){
-        getSupportActionBar().setTitle("История сканирования");
-        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#0065b1\">" + "История сканирования" + "</font>"));
+        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#0065b1\">" + "История" + "</font>"));
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.gos_white)));
     }
 
     // procedure shows empty history banner
     private void showEmptyHistoryBanner(){
 
-        if (adapter.getItemCount() == 0)
+        if (adapter.getItemCount() == 0) {
+            qrHistory.setVisibility(View.GONE);
             emptyHistory.setVisibility(View.VISIBLE);
-        else
-            emptyHistory.setVisibility(View.GONE);
+            return;
+        }
+        emptyHistory.setVisibility(View.GONE);
+        qrHistory.setVisibility(View.VISIBLE);
+
     }
 
     private void addScannedHistory(){
@@ -180,7 +183,14 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity implemen
                 .setTitle("Очистить историю")
                 .setMessage("Вы действительно хотите очистить историю сканирования?")
                 .setPositiveButton("Очистить", null)
-                .setNegativeButton("Отмена", null).show();
+                .setNegativeButton("Отмена", null)
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        showEmptyHistoryBanner();
+                    }
+                }).show();
+
 
         Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
@@ -194,16 +204,15 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity implemen
                     adapter.notifyDataSetChanged();
                     addScannedHistory();
                 }
-                alertDialog.cancel();
                 Toast.makeText(QuickResponseCodeHistoryActivity.this,
                         "История сканирования очищена.", Toast.LENGTH_SHORT).show();
-                showEmptyHistoryBanner();
+                alertDialog.dismiss();
             }
         });
         negativeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alertDialog.cancel();
+                alertDialog.dismiss();
             }
         });
 

@@ -136,10 +136,11 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
         }
         else {
             holder.scannedStatus.setText("Сертификат устарел/не действителен");
-            holder.itemStatus.setText("Статус " + "Сертификат устарел/не действителен");
+            holder.itemStatus.setText("Статус " + "Сертификат временный/устарел/не действителен");
             holder.statusImg.setImageResource(R.drawable.ic__891023_cancel_cercle_close_delete_dismiss_icon);
         }
-        if (quickResponseCodeHistoryItemArrayList.get(currentPosition).isCertificateReuse() == true) {
+        if (quickResponseCodeHistoryItemArrayList.get(currentPosition).isCertificateReuse() == true
+                && !quickResponseCodeHistoryItemArrayList.get(currentPosition).getStatus().equals("Не действителен")){
             holder.scannedStatus.setText("Повторное использование сертификата");
             holder.itemStatus.setText("");
             holder.itemStatus.setText("Статус: " + "Повторное использование сертификата");
