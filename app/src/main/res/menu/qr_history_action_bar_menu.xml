@@ -3,13 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/qrHistorySettings"
-        android:title="Настройки истории"
-        app:showAsAction="never"/>
-
-    <item
         android:id="@+id/deleteQrHistory"
         android:title="Очистить историю"
-        app:showAsAction="never"/>
+        android:icon="@drawable/ic_baseline_clear_history"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/qrHistorySettings"
+        android:title="Настройки истории"
+        android:icon="@drawable/ic_baseline_settings_24"
+        app:showAsAction="always"/>
 
 </menu>

@@ -6,12 +6,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -30,7 +34,7 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity /*implem
 
     private HistoryFileInputOutput historyFileInputOutput = new HistoryFileInputOutput(this);
     private HistoryFileParser historyFileParser = new HistoryFileParser();
-    private QuickResponseCodeHistoryRecViewAdapter adapter;
+    private QuickResponseCodeHistoryRecViewAdapter adapter = new QuickResponseCodeHistoryRecViewAdapter(this/*, this*/);
     /*
     @Override
     public void onQrHistoryItemDropClick(int position) {
@@ -118,7 +122,6 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity /*implem
         getSupportActionBar().setTitle("История сканирования");
         getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#0065b1\">" + "История сканирования" + "</font>"));
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.gos_white)));
-        //getSupportActionBar().men
     }
 
     private void addScannedHistory(){
@@ -126,7 +129,7 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity /*implem
         String history = historyFileInputOutput.readFile();
 
         if (!history.isEmpty()) {
-            QuickResponseCodeHistoryRecViewAdapter adapter = new QuickResponseCodeHistoryRecViewAdapter(this/*, this*/);
+            //QuickResponseCodeHistoryRecViewAdapter adapter = new QuickResponseCodeHistoryRecViewAdapter(this/*, this*/);
             historyFileParser.convertHistoryToArrayList(history);
             historyFileParser.sortArrayByTime();
             adapter.setQuickResponseCodeHistoryItemArrayList(historyFileParser.getQuickResponseCodeHistoryItemArrayList());
@@ -137,11 +140,35 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity /*implem
 
     // procedure to clear qr history from file
     private void clearQrHistory(){
-        //TODO вылетело приложение
-        if (adapter.getItemCount() != 0){
-            //historyFileInputOutput.clearFile();
-            //historyFileParser.getQuickResponseCodeHistoryItemArrayList().clear();
-            //adapter.clear();
-        }
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle("Очистить историю")
+                .setMessage("Вы действительно хотите очистить историю сканирования?")
+                .setPositiveButton("Очистить", null)
+                .setNegativeButton("Отмена", null).show();
+
+        Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        positiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (adapter.getItemCount() != 0){
+                    historyFileInputOutput.clearFile();
+                    historyFileParser.getQuickResponseCodeHistoryItemArrayList().clear();
+                    adapter.clear();
+                    adapter.notifyDataSetChanged();
+                }
+                alertDialog.dismiss();
+                Toast.makeText(QuickResponseCodeHistoryActivity.this,
+                        "История сканирования очищена.", Toast.LENGTH_SHORT).show();
+            }
+        });
+        negativeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+
     }
 }

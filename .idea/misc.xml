@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/bottom_nav_text_color.xml" value="0.21666666666666667" />
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/ic_baseline_qr_code_scanner.xml" value="0.21296296296296297" />
         <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/toolbar_dropshadow.xml" value="0.21666666666666667" />
         <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/layout/activity_quick_responce_code_history.xml" value="0.20416666666666666" />

@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QuickResponseCodeHistoryActivity">
-
-
+    tools:context=".QuickResponseCodeHistoryActivity"
+    android:background="@color/darkGray">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/qrHistoryRecView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:paddingBottom="?attr/actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toTopOf="@+id/mainNavigationMenu"
