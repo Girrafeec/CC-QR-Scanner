@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter<QuickResponseCodeHistoryRecViewAdapter.ViewHolder> {
 
-    private ArrayList<QuickResponseCodeHistoryItem> quickResponseCodeHistoryItemArrayList
+    private static ArrayList<QuickResponseCodeHistoryItem> quickResponseCodeHistoryItemArrayList
             = new ArrayList<>();
 
     //private OnQrHistoryItemDropListener onQrHistoryItemDropListener;

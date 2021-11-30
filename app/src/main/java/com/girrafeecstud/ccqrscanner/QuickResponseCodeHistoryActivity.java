@@ -16,17 +16,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class QuickResponseCodeHistoryActivity extends AppCompatActivity /*implements QuickResponseCodeHistoryRecViewAdapter.OnQrHistoryItemDropListener*/{
+public class QuickResponseCodeHistoryActivity extends AppCompatActivity implements View.OnClickListener /*implements QuickResponseCodeHistoryRecViewAdapter.OnQrHistoryItemDropListener*/{
 
     private long backPressedTime;
 
     private BottomNavigationView bottomNavigationView;
 
     private RecyclerView qrHistory;
+
+    private LinearLayout emptyHistory;
+
+    private Button startScan;
 
     private androidx.appcompat.widget.Toolbar toolbar;
 
@@ -43,6 +48,18 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity /*implem
      */
 
     @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.startScanFromHistoryBtn:
+                QuickResponseCodeHistoryActivity.this.startActivity(new Intent(QuickResponseCodeHistoryActivity.this, MainActivity.class));
+                overridePendingTransition(0,0);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_responce_code_history);
@@ -50,7 +67,11 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity /*implem
         editActionBar();
         initUiElements();
 
+        startScan.setOnClickListener(this);
+
         addScannedHistory();
+
+        showEmptyHistoryBanner();
 
         // Set mainActivity selected in bottom nav bar
         bottomNavigationView.setSelectedItemId(R.id.quickResponseCodeHistoryActivity);
@@ -95,7 +116,8 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity /*implem
     private void initUiElements(){
         qrHistory = findViewById(R.id.qrHistoryRecView);
         bottomNavigationView = findViewById(R.id.mainNavigationMenu);
-        //toolbar = findViewById(R.id.qrHIstoryItemToolbar);
+        emptyHistory = findViewById(R.id.emptyHistoryBannerLinLay);
+        startScan = findViewById(R.id.startScanFromHistoryBtn);
     }
 
     @Override
@@ -110,7 +132,11 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity /*implem
             case R.id.qrHistorySettings:
                 break;
             case R.id.deleteQrHistory:
-                clearQrHistory();
+                if (adapter.getItemCount() != 0) {
+                    clearQrHistory();
+                    break;
+                }
+                Toast.makeText(this, "История сканирования пуста.", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;
@@ -122,6 +148,15 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity /*implem
         getSupportActionBar().setTitle("История сканирования");
         getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#0065b1\">" + "История сканирования" + "</font>"));
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.gos_white)));
+    }
+
+    // procedure shows empty history banner
+    private void showEmptyHistoryBanner(){
+
+        if (adapter.getItemCount() == 0)
+            emptyHistory.setVisibility(View.VISIBLE);
+        else
+            emptyHistory.setVisibility(View.GONE);
     }
 
     private void addScannedHistory(){
@@ -157,18 +192,21 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity /*implem
                     historyFileParser.getQuickResponseCodeHistoryItemArrayList().clear();
                     adapter.clear();
                     adapter.notifyDataSetChanged();
+                    addScannedHistory();
                 }
-                alertDialog.dismiss();
+                alertDialog.cancel();
                 Toast.makeText(QuickResponseCodeHistoryActivity.this,
                         "История сканирования очищена.", Toast.LENGTH_SHORT).show();
+                showEmptyHistoryBanner();
             }
         });
         negativeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alertDialog.dismiss();
+                alertDialog.cancel();
             }
         });
 
     }
+
 }
