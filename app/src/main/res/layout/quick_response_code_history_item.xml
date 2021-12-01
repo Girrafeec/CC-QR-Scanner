@@ -28,15 +28,32 @@
                 android:id="@+id/scannedStatusImg"
                 android:src="@drawable/ic__891023_cancel_cercle_close_delete_dismiss_icon"/>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/scannedTimeTxt"
-                android:layout_marginLeft="10dp"
-                android:text="12:30"
-                android:textSize="20dp"
-                android:textColor="@color/black"
-                android:gravity="center"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/scannedTimeTxt"
+                    android:layout_marginLeft="5dp"
+                    android:text="12:30"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center_horizontal"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/scannedDateTxt"
+                    android:layout_marginLeft="5dp"
+                    android:text="25.11.2021"
+                    android:textSize="14dp"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -45,7 +62,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="Некорректный код"
                 android:textColor="@color/black"
-                android:textSize="25dp"
+                android:textSize="20dp"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:focusable="true"

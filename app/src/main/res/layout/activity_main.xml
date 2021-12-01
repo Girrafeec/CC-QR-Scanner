@@ -17,11 +17,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/scannerView"
-        app:autoFocusButtonColor="@color/white"
-        app:flashButtonColor="@color/white"
-        app:maskColor="@android:color/transparent"
-        app:autoFocusButtonVisible="false"
-        app:flashButtonVisible="false">
+        app:autoFocusButtonColor="@color/gos_white"
+        app:flashButtonColor="@color/gos_white"
+        app:maskColor="@color/transparentGray"
+        app:autoFocusButtonVisible="true"
+        app:flashButtonVisible="true">
 
     </com.budiyev.android.codescanner.CodeScannerView>
 

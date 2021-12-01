@@ -13,10 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CCQRScanner">
-        <activity android:name=".OrganizationProfileActivity"></activity>
+        <activity
+            android:name=".HistorySettingsActivity"
+            android:exported="true" />
+        <activity android:name=".OrganizationProfileActivity" />
         <activity
             android:name=".QuickResponseCodeHistoryActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity android:name=".CertificateActivity" />
         <activity
             android:name=".MainActivity"

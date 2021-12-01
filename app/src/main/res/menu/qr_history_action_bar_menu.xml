@@ -8,10 +8,4 @@
         android:icon="@drawable/ic_baseline_clear_history"
         app:showAsAction="always"/>
 
-    <item
-        android:id="@+id/qrHistorySettings"
-        android:title="Настройки истории"
-        android:icon="@drawable/ic_baseline_settings_24"
-        app:showAsAction="always"/>
-
 </menu>

@@ -78,6 +78,11 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
         else
             holder.scannedTime.setText(quickResponseCodeHistoryItemArrayList.get(currentPosition).getTime().getHour()
                     + ":" + quickResponseCodeHistoryItemArrayList.get(currentPosition).getTime().getMinute());
+
+        // set date
+        holder.scannedDate.setText(quickResponseCodeHistoryItemArrayList.get(currentPosition).getTime().getDayOfMonth() + "."
+                + quickResponseCodeHistoryItemArrayList.get(currentPosition).getTime().getMonthValue() + "."
+                + quickResponseCodeHistoryItemArrayList.get(currentPosition).getTime().getYear());
     }
 
     // procedure to set expanded info of qr history item for invalid qr
@@ -202,7 +207,7 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
 
         private ImageButton expandItem;
         private ImageView statusImg;
-        private TextView scannedStatus, scannedTime;
+        private TextView scannedStatus, scannedTime, scannedDate;
         private TextView itemStatus, itemUrl, itemContent, itemCertType, itemCertStatus, itemCertId,
                 itemCertExpiredAt, itemCertFio, itemCertEnFio, itemCertPassport, itemCertEnPassport,
                 itemCertRecoveryDate, itemCertBirthDate, itemCertValidTime;
@@ -214,6 +219,7 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
             expandItem = itemView.findViewById(R.id.dropScannedHistoryBtn);
             scannedStatus = itemView.findViewById(R.id.scannedStatusTxt);
             scannedTime = itemView.findViewById(R.id.scannedTimeTxt);
+            scannedDate = itemView.findViewById(R.id.scannedDateTxt);
             statusImg = itemView.findViewById(R.id.scannedStatusImg);
 
             qrHistoryItem = itemView.findViewById(R.id.qrHistoryItemInfoLinLay);

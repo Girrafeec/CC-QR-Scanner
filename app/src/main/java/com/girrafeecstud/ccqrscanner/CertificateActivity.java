@@ -190,13 +190,15 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
     private void checkInternetConnection(){
 
+        System.out.println(progressBar.getVisibility());
+
         if (!isConnectedToInternet()) {
             progressBar.setVisibility(View.GONE);
             error.setVisibility(View.VISIBLE);
         }
         else {
-            error.setVisibility(View.VISIBLE);
-            error.setVisibility(View.INVISIBLE);
+            error.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
             getJsonFromUrl(certificateUrl);
         }
 
@@ -204,10 +206,8 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
     // function returns boolean result of internet connection
     private boolean isConnectedToInternet(){
-
         ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(CertificateActivity.CONNECTIVITY_SERVICE);
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
-
     }
 
     private void getJsonFromUrl(String url){
@@ -232,7 +232,8 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         stuff = parseCertificateJson.getStuff();
         validFrom  =parseCertificateJson.getValidFrom();
 
-        if (status.equals("1"))
+        //TODO исправить для временных сертфикатов (isBeforeValid)
+        if (status.equals("1") || status.equals("OK"))
             status = "Действителен";
         else
             status = "Не действителен";

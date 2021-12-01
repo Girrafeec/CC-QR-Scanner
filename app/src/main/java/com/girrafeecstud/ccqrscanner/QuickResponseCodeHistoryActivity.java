@@ -107,7 +107,7 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity implemen
             return;
         }
 
-        backToast = Toast.makeText(this, "Нажмите ещё раз для выхода из приложения", Toast.LENGTH_SHORT);
+        backToast = Toast.makeText(this, "Для выхода нажмите назад ещё раз", Toast.LENGTH_SHORT);
         backToast.show();
 
         backPressedTime = System.currentTimeMillis();
@@ -129,14 +129,12 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity implemen
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.qrHistorySettings:
-                break;
             case R.id.deleteQrHistory:
                 if (adapter.getItemCount() != 0) {
                     clearQrHistory();
                     break;
                 }
-                Toast.makeText(this, "История сканирования пуста.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "История сканирования пуста", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;
@@ -205,7 +203,7 @@ public class QuickResponseCodeHistoryActivity extends AppCompatActivity implemen
                     addScannedHistory();
                 }
                 Toast.makeText(QuickResponseCodeHistoryActivity.this,
-                        "История сканирования очищена.", Toast.LENGTH_SHORT).show();
+                        "История сканирования очищена", Toast.LENGTH_SHORT).show();
                 alertDialog.dismiss();
             }
         });

@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,12 +34,14 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    //TODO увеличение/уменьшение зума камеры
-    //TODO кнопка вспышки на смартфоне
-    //TODO автофокус камеры - кнопка
+    //TODO увеличение/уменьшение зума камеры при помощи seekbar
     //TODO - кнопка вопросика с краткой инфой о том, что надо сделать
     //TODO добавить повторный запрос разрешений на камеру (с помощью диалога)
     //TODO если человек нажал "больше не спрашивать", то отправить его в настройки самостоятельно включить доступ к камере" - диалог
+
+    //TODO добавить action bar в certificate activity
+    //TODO поправить баги при сканировании кода
+    //TODO выводить диалог в том случае, если сертификат повторно используется
 
     private static final int CAMERA_REQUEST_CODE = 101;
 
@@ -73,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
         askCameraPermission();
 
+        editActionBar();
         initUiElements();
         initCodeScanner();
 
@@ -113,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        backToast = Toast.makeText(this, "Нажмите ещё раз для выхода из приложения", Toast.LENGTH_SHORT);
+        backToast = Toast.makeText(this, "Для выхода нажмите назад ещё раз", Toast.LENGTH_SHORT);
         backToast.show();
 
         backPressedTime = System.currentTimeMillis();
@@ -163,6 +167,11 @@ public class MainActivity extends AppCompatActivity {
         url = findViewById(R.id.urlTxt);
         bottomNavigationView = findViewById(R.id.mainNavigationMenu);
         notSuccessScanResultDialog = new Dialog(this);
+    }
+
+    private void editActionBar(){
+        getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#0065b1\">" + "Сканер" + "</font>"));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.gos_white)));
     }
 
     // procedure to check is it necessary to request camera permission
