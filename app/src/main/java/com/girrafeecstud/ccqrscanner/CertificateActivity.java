@@ -84,6 +84,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     private String birthDate = "";
     private String stuff = "";
     private String validFrom = "";
+    private String isBeforeValidFrom = "";
 
     private static boolean jsonSucceeed = false;
     private boolean certificateReuse = false;
@@ -231,9 +232,10 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         birthDate= parseCertificateJson.getBirthDate();
         stuff = parseCertificateJson.getStuff();
         validFrom  =parseCertificateJson.getValidFrom();
+        isBeforeValidFrom = parseCertificateJson.getIsBeforeValidFrom();
 
         //TODO исправить для временных сертфикатов (isBeforeValid)
-        if (status.equals("1") || status.equals("OK"))
+        if (status.equals("1") || (status.equals("OK") && !isBeforeValidFrom.equals("true")))
             status = "Действителен";
         else
             status = "Не действителен";
@@ -333,9 +335,11 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
             enPassport = "0";
         if (validFrom.isEmpty())
             validFrom = "0";
+        if (isBeforeValidFrom.isEmpty())
+            isBeforeValidFrom = "0";
 
         historyFileInputOutput.writeValidQrToFile(3, certificateReuse, type, title, status, certificateId, expiredAt, validFrom,
-                fio, enFio, recoveryDate, passport, enPassport, birthDate, scanTime);
+                isBeforeValidFrom, fio, enFio, recoveryDate, passport, enPassport, birthDate, scanTime);
 
         //String str = historyFileInputOutput.readFile();
         //Toast.makeText(this, str, Toast.LENGTH_LONG).show();

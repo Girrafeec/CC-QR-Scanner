@@ -22,6 +22,7 @@ public class ParseCertificateJson {
     private String enPassport = "";
     private String birthDate = "";
     private String validFrom = "";
+    private String isBeforeValidFrom = "";
 
     // в json, где нет items нет типа сертификата, но в stuff записан тип вакцины
     private String stuff = "";
@@ -86,6 +87,10 @@ public class ParseCertificateJson {
 
     public String getStuff() {
         return stuff;
+    }
+
+    public String getIsBeforeValidFrom(){
+        return isBeforeValidFrom;
     }
 
     public void parseJson(){
@@ -167,6 +172,7 @@ public class ParseCertificateJson {
             }
 
             validFrom = jsonObjectType.getString("validFrom");
+            isBeforeValidFrom = jsonObjectType.getString("isBeforeValidFrom");
 
         } catch (JSONException e) {
             e.printStackTrace();

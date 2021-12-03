@@ -24,6 +24,7 @@ public class QuickResponseCodeHistoryItem {
     private String enPassport = "";
     private String birthDate = "";
     private String validFrom = "";
+    private String isBeforeValidFrom = "";
     private LocalDateTime time;
 
     QuickResponseCodeURL quickResponseCodeURL = new QuickResponseCodeURL();
@@ -41,8 +42,9 @@ public class QuickResponseCodeHistoryItem {
 
     // Constructor for qr code with valid certificate url
     public QuickResponseCodeHistoryItem(int qrCodeType, boolean certificateReuse, String type, String title, String status,
-                                        String certificateId, String expiredAt, String validFrom, String fio, String enFio, String recoveryDate,
-                                        String passport, String enPassport, String birthDate, LocalDateTime time) {
+                                        String certificateId, String expiredAt, String validFrom, String isBeforeValidFrom,
+                                        String fio, String enFio, String recoveryDate, String passport, String enPassport,
+                                        String birthDate, LocalDateTime time) {
 
         if (certificateReuse)
             imgStatus = "YELLOW";
@@ -63,6 +65,7 @@ public class QuickResponseCodeHistoryItem {
         this.enPassport = enPassport;
         this.birthDate = birthDate;
         this.validFrom = validFrom;
+        this.isBeforeValidFrom = isBeforeValidFrom;
         this.time = time;
     }
 

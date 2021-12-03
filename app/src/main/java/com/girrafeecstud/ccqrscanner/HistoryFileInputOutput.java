@@ -88,7 +88,7 @@ public class HistoryFileInputOutput {
     }
 
     public void writeValidQrToFile(int qrCodeType, boolean certificateReuse,String type, String title, String status,
-                                   String certificateId, String expiredAt, String validFrom, String fio, String enFio, String recoveryDate,
+                                   String certificateId, String expiredAt, String validFrom, String isBeforeValidFrom, String fio, String enFio, String recoveryDate,
                                    String passport, String enPassport, String birthDate, String currentTime){
 
         final File file = context.getFileStreamPath(fileName);
@@ -97,8 +97,8 @@ public class HistoryFileInputOutput {
 
         String str = "[" + qrCodeType + "]" + "\t" + "[" + certificateReuse + "]" + "\t" + "[" + type + "]" + "\t" + "[" + title + "]" + "\t"
                 + "[" + status + "]" + "\t" + "[" + certificateId + "]" + "\t" + "[" + expiredAt + "]" + "\t" + "[" + validFrom + "]" + "\t"
-                + "[" + fio + "]" + "\t" + "[" + enFio + "]" + "\t" + "[" + recoveryDate + "]" + "\t" + "[" + passport + "]" + "\t"
-                + "[" + enPassport + "]" + "\t" + "[" + birthDate + "]" + "\t" + "[" + currentTime + "]";
+                + "[+" + isBeforeValidFrom + "]" + "\t" + "[" + fio + "]" + "\t" + "[" + enFio + "]" + "\t" + "[" + recoveryDate + "]" + "\t"
+                + "[" + passport + "]" + "\t" + "[" + enPassport + "]" + "\t" + "[" + birthDate + "]" + "\t" + "[" + currentTime + "]";
 
         FileOutputStream fileOutputStream = null;
 
