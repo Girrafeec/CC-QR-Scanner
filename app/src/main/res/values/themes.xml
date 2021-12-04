@@ -15,4 +15,5 @@
         <!-- Toolbar menu color -->
         <item name="actionMenuTextColor">@color/gos_blue</item>
     </style>
+
 </resources>

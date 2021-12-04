@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CertificateActivity">
+    tools:context=".CertificateActivity"
+    android:background="@color/gos_white">
 
     <TextView
         android:id="@+id/jsonSucceedTxt"
@@ -75,8 +76,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/certificateActivityScrollBar"
+        android:layout_marginTop="10dp"
         android:scrollbars="none"
         android:visibility="invisible">
 
@@ -86,7 +88,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
             android:orientation="vertical">
 
             <LinearLayout
