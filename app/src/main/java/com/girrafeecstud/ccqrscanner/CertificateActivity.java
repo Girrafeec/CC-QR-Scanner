@@ -1,5 +1,6 @@
 package com.girrafeecstud.ccqrscanner;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -17,6 +18,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -115,11 +117,23 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    // this event will enable the back function to the button on press
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_certificate);
 
+        editActionBar();
         initUiElements();
 
         getDataFromMainActivity();
@@ -166,7 +180,8 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void editActionBar(){
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back);
         getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#0065b1\">" + "Данные сертификата" + "</font>"));
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.gos_white)));
     }
@@ -243,7 +258,6 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         validFrom  =parseCertificateJson.getValidFrom();
         isBeforeValidFrom = parseCertificateJson.getIsBeforeValidFrom();
 
-        //TODO исправить для временных сертфикатов (isBeforeValid)
         if (status.equals("1") || (status.equals("OK") && !isBeforeValidFrom.equals("true")))
             status = "Действителен";
         else
