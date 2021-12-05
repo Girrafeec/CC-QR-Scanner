@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
@@ -31,6 +34,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +52,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLConnection;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -74,6 +79,8 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     private ProgressBar progressBar;
 
     private ScrollView scrollView;
+
+    private Dialog reuseDialog;
 
     private String certificateUrl = "", jsonString = "";
     private String type = "";
@@ -211,6 +218,8 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         recoveryDateTxt = findViewById(R.id.certificateRecoveryDateTxt);
         validFromTxt = findViewById(R.id.certificateValidFromDateTxt);
 
+        reuseDialog = new Dialog(this);
+
     }
 
     private void checkInternetConnection(){
@@ -333,12 +342,12 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
             for (int i = 0; i < historyFileParser.getQuickResponseCodeHistoryItemArrayList().size(); i++) {
 
                 if (historyFileParser.getQuickResponseCodeHistoryItemArrayList().get(i).getQrCodeType() == 3 &&
-                        historyFileParser.getQuickResponseCodeHistoryItemArrayList().get(i).getCertificateId().equals(certificateId)) {
+                        historyFileParser.getQuickResponseCodeHistoryItemArrayList().get(i).getCertificateId().equals(certificateId) &&
+                        historyFileParser.getQuickResponseCodeHistoryItemArrayList().get(i).getStatus().equals("Действителен")) {
                     certificateReuse = true;
-                    System.out.println("potential reuse!");
+                    showReuseDialog(historyFileParser.getQuickResponseCodeHistoryItemArrayList().get(i).getCertificateId(), historyFileParser.getQuickResponseCodeHistoryItemArrayList().get(i).getTime());
                     break;
                 }
-                //TODO доделать возможный поиск переиспользовани
 
             }
         }
@@ -462,6 +471,40 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
             }
 
         }
+    }
+
+    private void showReuseDialog(String certId, LocalDateTime time){
+
+        reuseDialog.setContentView(R.layout.certificate_reuse_dialog);
+        reuseDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Button clickOk = reuseDialog.findViewById(R.id.certReuseDialogClickOkBtn);
+        TextView scanStatusLongMessage = reuseDialog.findViewById(R.id.certReuseDescriptionTxt);
+
+        String curTime = "";
+        // set time
+        if (String.valueOf(time.getMinute()).length() == 1)
+            curTime = time.getHour() + ":" + "0" + time.getMinute();
+        else
+            curTime = time.getHour() + ":" + time.getMinute();
+
+        scanStatusLongMessage.setText("Сертификат № " + certId +  " уже сканировался сегодня в " + curTime + ".");
+
+        reuseDialog.show();
+
+        clickOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reuseDialog.cancel();
+                onResume();
+            }
+        });
+
+        reuseDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                onResume();
+            }
+        });
     }
 
 }

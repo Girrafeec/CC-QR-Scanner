@@ -41,9 +41,6 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    //TODO увеличение/уменьшение зума камеры при помощи seekbar
-    //TODO - кнопка вопросика с краткой инфой о том, что надо сделать
-
     //TODO выводить диалог в том случае, если сертификат повторно используется
 
     private static final int CAMERA_REQUEST_CODE = 101;
