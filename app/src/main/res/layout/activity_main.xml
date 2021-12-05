@@ -7,11 +7,11 @@
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
+        android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="550dp" />
+        app:layout_constraintGuide_begin="460dp" />
 
     <com.budiyev.android.codescanner.CodeScannerView
         android:layout_width="match_parent"
@@ -22,19 +22,18 @@
         app:maskColor="@color/transparentGray"
         app:autoFocusButtonVisible="true"
         app:flashButtonVisible="true">
-
     </com.budiyev.android.codescanner.CodeScannerView>
 
-    <TextView
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/urlTxt"
-        android:text=""
-        android:textColor="@color/white"
-        android:textSize="20dp"
+        android:id="@+id/helpBtn"
+        app:layout_constraintTop_toBottomOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline4" />
+        app:layout_constraintBottom_toTopOf="@id/mainNavigationMenu"
+        android:src="@drawable/ic_outline_help_outline"
+        android:background="@android:color/transparent"
+        android:layout_marginRight="20dp"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"

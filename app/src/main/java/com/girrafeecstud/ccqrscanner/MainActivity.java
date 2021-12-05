@@ -2,6 +2,8 @@ package com.girrafeecstud.ccqrscanner;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.CameraControl;
+import androidx.camera.core.CameraX;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -12,6 +14,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.hardware.Camera;
+import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -19,6 +24,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +39,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     //TODO увеличение/уменьшение зума камеры при помощи seekbar
     //TODO - кнопка вопросика с краткой инфой о том, что надо сделать
@@ -49,9 +56,9 @@ public class MainActivity extends AppCompatActivity {
 
     private long backPressedTime;
 
-    private TextView url;
+    private Dialog notSuccessScanResultDialog, helpDialog;
 
-    private Dialog notSuccessScanResultDialog;
+    private ImageButton helpButton;
 
     private Toast backToast;
 
@@ -62,6 +69,16 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.helpBtn:
+                showHelpDialog();
+                break;
+            default:
+                break;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
         initCodeScanner();
 
         codeScannerProc();
+
+        helpButton.setOnClickListener(this);
 
         // Set mainActivity selected in bottom nav bar
         bottomNavigationView.setSelectedItemId(R.id.mainActivity);
@@ -126,8 +145,6 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        //Toast.makeText(MainActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
-                        //url.setText(result.getText());
                         checkContent(result.getText());
                     }
                 });
@@ -160,9 +177,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initUiElements(){
-        url = findViewById(R.id.urlTxt);
         bottomNavigationView = findViewById(R.id.mainNavigationMenu);
+        helpButton = findViewById(R.id.helpBtn);
         notSuccessScanResultDialog = new Dialog(this);
+        helpDialog = new Dialog(this);
     }
 
     private void editActionBar(){
@@ -282,5 +300,19 @@ public class MainActivity extends AppCompatActivity {
         //String ert = historyFileInputOutput.readFile();
         //Toast.makeText(this, ert, Toast.LENGTH_LONG).show();
 
+    }
+
+    private void showHelpDialog(){
+        helpDialog.setContentView(R.layout.help_info_dialog);
+        helpDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        helpDialog.show();
+
+        helpDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                onResume();
+            }
+        });
     }
 }
