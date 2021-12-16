@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //TODO выводить диалог в том случае, если сертификат повторно используется
     //TODO добавить проверку URL на валидность вместе с проверкой и домена и содержимого после домена
+    //TOOD зависает после сканирования кода с текстом по типу https://www.gosuslugi.ru/vaccine/cert/verify/0fcfc8a8-945d-4b2e-a6ab-691c3d6fd67d?lang=ru СОСИ
 
     private static final int CAMERA_REQUEST_CODE = 101;
 
