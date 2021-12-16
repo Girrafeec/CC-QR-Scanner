@@ -42,6 +42,7 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     //TODO выводить диалог в том случае, если сертификат повторно используется
+    //TODO добавить проверку URL на валидность вместе с проверкой и домена и содержимого после домена
 
     private static final int CAMERA_REQUEST_CODE = 101;
 
