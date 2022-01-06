@@ -3,6 +3,7 @@ package com.girrafeecstud.ccqrscanner;
 import android.net.Uri;
 
 import java.net.URI;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class QuickResponseCodeURL {
@@ -11,10 +12,21 @@ public class QuickResponseCodeURL {
     private static final Pattern urlPattern = Pattern.compile(
             "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
                     + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
-                    + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)",
+                    + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};' ]*)",
             Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
 
-    private static final String[] validURL = new String[]{"www.gosuslugi.ru"};
+    // Pattern for valid url path
+    // example: /covid-cert/verify/****************, where ***************** - certificate id
+    // example: /covid-cert/status/************************************, where ************************************ - hash sum
+    // example: /vaccine/cert/verify/************************************, where ************************************ - hash sum
+    private static final Pattern urlPathPattern = Pattern.compile(
+            "^/[\b(covid\\-cert)|(vaccine)\b/]+/[\b(verify|status|cert/verify)\b/]+/[^/]+[a-zA-Z0-9]$"
+    );
+
+    // Pattern for valid url domain
+    private static final Pattern validUrlDomain = Pattern.compile(
+            "^www.gosuslugi.ru$"
+    );
 
     // function to check if qr contains url
     public boolean isURL(String str){
@@ -26,18 +38,24 @@ public class QuickResponseCodeURL {
 
     }
 
+    // function check if url is valid (has valid domain and valid path)
     public boolean isValidURL(String str){
         Uri quickResponseCodeURI = Uri.parse(str);
 
         String domainName = quickResponseCodeURI.getHost();
+        String path = quickResponseCodeURI.getPath();
 
-        for (int i=0; i < validURL.length; i++){
-            if (domainName.equals(validURL[0]))
-                return true;
-        }
+        if (validUrlDomain.matcher(domainName).matches()
+                && urlPathPattern.matcher(path).matches())
+            return true;
 
         return false;
 
     }
 
+    // function replaces potential spaces in url
+    public String replaceSpaces(String url){
+        String str  = url.replaceAll(" ", "0%20");
+        return str;
+    }
 }

@@ -51,6 +51,9 @@ public class QuickResponseCodeHistoryItem {
         else
             imgStatus = "GREEN";
 
+        if (qrCodeType == 4)
+            imgStatus = "RED";
+
         this.qrCodeType = qrCodeType;
         this.certificateReuse = certificateReuse;
         this.type = type;

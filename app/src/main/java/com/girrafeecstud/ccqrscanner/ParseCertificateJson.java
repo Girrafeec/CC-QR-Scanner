@@ -95,11 +95,14 @@ public class ParseCertificateJson {
 
     public void parseJson(){
 
-        if (jsonObject.has("items"))
-            parseJsonWithItems();
-        else if (!jsonObject.has("items"))
+        if (!jsonObject.toString().equals("{}")) {
+            if (jsonObject.has("items")) {
+                parseJsonWithItems();
+                return;
+            }
             parseJsonWithoutItems();
-
+        }
+        /*
         Log.i("type", type);
         Log.i("title", title);
         Log.i("status", status);
@@ -112,7 +115,8 @@ public class ParseCertificateJson {
         Log.i("recoveryDate", recoveryDate);
         Log.i("birthDate", birthDate);
         Log.i("stuff", stuff);
-
+         */
+        return;
     }
 
     private void parseJsonWithoutItems(){

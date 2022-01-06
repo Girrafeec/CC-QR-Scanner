@@ -2,8 +2,6 @@ package com.girrafeecstud.ccqrscanner;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.CameraControl;
-import androidx.camera.core.CameraX;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -40,10 +38,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    //TODO выводить диалог в том случае, если сертификат повторно используется
-    //TODO добавить проверку URL на валидность вместе с проверкой и домена и содержимого после домена
-    //TOOD зависает после сканирования кода с текстом по типу https://www.gosuslugi.ru/vaccine/cert/verify/0fcfc8a8-945d-4b2e-a6ab-691c3d6fd67d?lang=ru СОСИ - заменить пробелы на %20, а потом обрабатывать уже эту ссылку
 
     private static final int CAMERA_REQUEST_CODE = 101;
 
@@ -217,7 +211,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String scanTime = String.valueOf(currentTime);
         scanTime = scanTime.replace(" ", "\\");
 
-
         if (!quickResponseCodeURL.isURL(str)) {
             historyFileInputOutput.writeInvalidQrToFile(1, str, scanTime);
             //Toast.makeText(this, "QR does not contain URL", Toast.LENGTH_SHORT).show();
@@ -230,6 +223,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             showNotSuccessScanResultAlertDialog(SCAN_RESULT_INVALID_URL);
             return;
         }
+
+        str = quickResponseCodeURL.replaceSpaces(str);
 
         startCertificateActivity(str);
 

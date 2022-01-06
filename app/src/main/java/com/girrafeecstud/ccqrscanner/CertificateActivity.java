@@ -4,10 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,8 +12,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.DocumentsContract;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -28,20 +23,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.makeramen.roundedimageview.RoundedImageView;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,31 +34,21 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
-import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Scanner;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-
-import javax.net.ssl.HttpsURLConnection;
 
 public class CertificateActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private LinearLayout error, certificateBackground, recoveryDateLinLay, validFromLinLay;
+    private LinearLayout error, certificateBackground, recoveryDateLinLay, validFromLinLay, expiredAtLinLay;
     private Button tryToConnectNetworkAgain;
 
     private TextView jsonStatusTxt;
 
     private TextView titleTxt, statusTxt, certificateIdTxt, recoveryDateTxt, expiredAtTxt
-            , fioTxt, pasportTxt, enPasportTxt, birthDateTxt, validFromTxt;
+            , fioTxt, passportTxt, enPasportTxt, birthDateTxt, validFromTxt;
 
     private ProgressBar progressBar;
 
@@ -101,7 +75,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     private static boolean jsonSucceeed = false;
     private boolean certificateReuse = false;
 
-    private JSONObject jsonObject;
+    private JSONObject jsonObject = new JSONObject();
 
     private ParseCertificateJson parseCertificateJson;
 
@@ -170,15 +144,13 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void getJsonData(){
-
-        Log.i("before", "getting json");
         parseCertificateJson = new ParseCertificateJson(jsonObject);
         parseCertificateJson.parseJson();
         setCertificateDataValues();
         setUiValues();
-        checkPotentialCertificateReuse();
+        if (!jsonObject.toString().equals("{}"))
+            checkPotentialCertificateReuse();
         saveCertificateToMemory();
-
     }
 
     private void getDataFromMainActivity(){
@@ -199,6 +171,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
         error = findViewById(R.id.certificateActivityErrorLinLay);
         certificateBackground = findViewById(R.id.certificateCardLinLay);
+        expiredAtLinLay = findViewById(R.id.expiredAtLinLay);
         recoveryDateLinLay = findViewById(R.id.certificateRecoveryDateLinlay);
         validFromLinLay = findViewById(R.id.validFromLinLay);
 
@@ -210,7 +183,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         birthDateTxt = findViewById(R.id.certificateBirthDateTxt);
         certificateIdTxt = findViewById(R.id.certificateIdTxt);
         enPasportTxt = findViewById(R.id.certificateEnPassportTxt);
-        pasportTxt = findViewById(R.id.certificatePassportTxt);
+        passportTxt = findViewById(R.id.certificatePassportTxt);
         fioTxt = findViewById(R.id.certificateFioTxt);
         statusTxt = findViewById(R.id.certificateStatusTxt);
         titleTxt = findViewById(R.id.certificateTitleTxt);
@@ -252,47 +225,52 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     // set json data to string values
     private void setCertificateDataValues(){
 
-        type = parseCertificateJson.getType();
-        title= parseCertificateJson.getTitle();
-        status= parseCertificateJson.getStatus();
-        certificateId= parseCertificateJson.getCertificateId();
-        expiredAt= parseCertificateJson.getExpiredAt();
-        fio= parseCertificateJson.getFio();
-        enFio= parseCertificateJson.getEnFio();
-        recoveryDate= parseCertificateJson.getRecoveryDate();
-        passport= parseCertificateJson.getPassport();
-        enPassport= parseCertificateJson.getEnPassport();
-        birthDate= parseCertificateJson.getBirthDate();
-        stuff = parseCertificateJson.getStuff();
-        validFrom  =parseCertificateJson.getValidFrom();
-        isBeforeValidFrom = parseCertificateJson.getIsBeforeValidFrom();
+        if (!jsonObject.toString().equals("{}")) {
+            type = parseCertificateJson.getType();
+            title = parseCertificateJson.getTitle();
+            status = parseCertificateJson.getStatus();
+            certificateId = parseCertificateJson.getCertificateId();
+            expiredAt = parseCertificateJson.getExpiredAt();
+            fio = parseCertificateJson.getFio();
+            enFio = parseCertificateJson.getEnFio();
+            recoveryDate = parseCertificateJson.getRecoveryDate();
+            passport = parseCertificateJson.getPassport();
+            enPassport = parseCertificateJson.getEnPassport();
+            birthDate = parseCertificateJson.getBirthDate();
+            stuff = parseCertificateJson.getStuff();
+            validFrom = parseCertificateJson.getValidFrom();
+            isBeforeValidFrom = parseCertificateJson.getIsBeforeValidFrom();
 
-        if (status.equals("1") || (status.equals("OK") && !isBeforeValidFrom.equals("true")))
-            status = "Действителен";
-        else
-            status = "Не действителен";
+            if (status.equals("1") || (status.equals("OK") && !isBeforeValidFrom.equals("true")))
+                status = "Действителен";
+            else
+                status = "Не действителен";
 
-        if (title.isEmpty() && type.isEmpty() && !stuff.isEmpty()) {
-            title = "Сертификат вакцинации COVID-19";
-            type = "VACCINE_CERT";
-        }
+            if (title.isEmpty() && type.isEmpty() && !stuff.isEmpty()) {
+                title = "Сертификат вакцинации от COVID-19";
+                type = "VACCINE_CERT";
+            }
 
-        if (type.equals("VACCINE_CERT")) {
-            type = "Сертификат вакцинации";
-            return;
+            if (type.equals("VACCINE_CERT")) {
+                type = "Сертификат вакцинации от COVID-19";
+                return;
+            }
+            if (type.equals("TEMPORARY_CERT")) {
+                type = "Временный сертификат вакцинации";
+                return;
+            }
+            if (type.equals("COVID_TEST")) {
+                type = "ПЦР-тест";
+                return;
+            }
+            if (type.equals("ILLNESS_FACT")) {
+                type = "Сведения о перенесённом заболевании";
+                return;
+            }
         }
-        if (type.equals("TEMPORARY_CERT")) {
-            type = "Временный сертификат вакцинации";
-            return;
-        }
-        if (type.equals("COVID_TEST")) {
-            type = "ПЦР-тест";
-            return;
-        }
-        if (type.equals("ILLNESS_FACT")) {
-            type = "Сведения о перенесённом заболевании";
-            return;
-        }
+        // if certificate does not exist, we set other values:
+        status = "Не найден";
+        title = "Сертификат COVID-19";
 
     }
 
@@ -301,34 +279,44 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
         scrollView.setVisibility(View.VISIBLE);
 
-        birthDateTxt.setText(birthDateTxt.getText() + birthDate);
-        certificateIdTxt.setText(certificateIdTxt.getText() + certificateId);
-        pasportTxt.setText(pasportTxt.getText() + passport);
-        fioTxt.setText(fio);
-        titleTxt.setText(title);
-        expiredAtTxt.setText(expiredAtTxt.getText() + expiredAt);
+        if (!jsonObject.toString().equals("{}")) {
 
-        if (!enPassport.isEmpty()) {
-            enPasportTxt.setVisibility(View.VISIBLE);
-            enPasportTxt.setText(enPasportTxt.getText() + enPassport);
+            birthDateTxt.setText(birthDateTxt.getText() + birthDate);
+            certificateIdTxt.setText(certificateIdTxt.getText() + certificateId);
+            passportTxt.setText(passportTxt.getText() + passport);
+            fioTxt.setText(fio);
+            expiredAtTxt.setText(expiredAtTxt.getText() + expiredAt);
+
+            if (!enPassport.isEmpty()) {
+                enPasportTxt.setVisibility(View.VISIBLE);
+                enPasportTxt.setText(enPasportTxt.getText() + enPassport);
+            }
+
+            if (!recoveryDate.isEmpty()) {
+                recoveryDateLinLay.setVisibility(View.VISIBLE);
+                recoveryDateTxt.setText(recoveryDateTxt.getText() + recoveryDate);
+            }
+
+            if (!validFrom.isEmpty()) {
+                validFromLinLay.setVisibility(View.VISIBLE);
+                validFromTxt.setText(validFromTxt.getText() + validFrom);
+            }
         }
-
-        if (!recoveryDate.isEmpty()) {
-            recoveryDateLinLay.setVisibility(View.VISIBLE);
-            recoveryDateTxt.setText(recoveryDateTxt.getText() + recoveryDate);
-        }
-
-        if (!validFrom.isEmpty()) {
-            validFromLinLay.setVisibility(View.VISIBLE);
-            validFromTxt.setText(validFromTxt.getText() + validFrom);
-        }
-
-        statusTxt.setText(status);
-        if (status.equals("Не действителен"))
-            certificateBackground.setBackground(ContextCompat.getDrawable(this, R.drawable.red_rounded_recktangle));
         else
-            certificateBackground.setBackground(ContextCompat.getDrawable(this, R.drawable.green_rounded_recktangle));
+        {
+            certificateIdTxt.setVisibility(View.GONE);
+            passportTxt.setVisibility(View.GONE);
+            birthDateTxt.setVisibility(View.GONE);
+            expiredAtLinLay.setVisibility(View.GONE);
+        }
 
+        titleTxt.setText(title);
+        statusTxt.setText(status);
+
+        if (status.equals("Действителен"))
+            certificateBackground.setBackground(ContextCompat.getDrawable(this, R.drawable.green_rounded_recktangle));
+        else
+            certificateBackground.setBackground(ContextCompat.getDrawable(this, R.drawable.red_rounded_recktangle));
     }
 
     // procedure to check if current certificate eas used earlier
@@ -361,6 +349,20 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         String scanTime = String.valueOf(currentTime);
         scanTime = scanTime.replace(" ", "\\");
 
+        if (type.isEmpty())
+            type = "0";
+        if (expiredAt.isEmpty())
+            expiredAt = "0";
+        if (fio.isEmpty())
+            fio = "0";
+        if (enFio.isEmpty())
+            enFio = "0";
+        if (certificateId.isEmpty())
+            certificateId = "0";
+        if (passport.isEmpty())
+            passport = "0";
+        if (birthDate.isEmpty())
+            birthDate = "0";
         if (recoveryDate.isEmpty())
             recoveryDate = "0";
         if (enPassport.isEmpty())
@@ -370,11 +372,16 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         if (isBeforeValidFrom.isEmpty())
             isBeforeValidFrom = "0";
 
-        historyFileInputOutput.writeValidQrToFile(3, certificateReuse, type, title, status, certificateId, expiredAt, validFrom,
-                isBeforeValidFrom, fio, enFio, recoveryDate, passport, enPassport, birthDate, scanTime);
+        // if certificate does not exist, we save it as qrCodeType "4" - does not exist
+        int qrCodeType;
 
-        //String str = historyFileInputOutput.readFile();
-        //Toast.makeText(this, str, Toast.LENGTH_LONG).show();
+        if (jsonObject.toString().equals("{}"))
+            qrCodeType = 4;
+        else
+            qrCodeType = 3;
+
+        historyFileInputOutput.writeValidQrToFile(qrCodeType, certificateReuse, type, title, status, certificateId, expiredAt, validFrom,
+                isBeforeValidFrom, fio, enFio, recoveryDate, passport, enPassport, birthDate, scanTime);
 
     }
 
@@ -451,16 +458,10 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
                 }
 
                 if (!data.isEmpty()){
-
                     jsonObject = new JSONObject(data);
                     jsonString = jsonObject.toString();
-                    Log.i("json: ", jsonString);
                     jsonSucceeed = true;
-                    // parseCertificateJson = new ParseCertificateJson(jsonObject);
-                    //  parseCertificateJson.parseJson();
-
                 }
-
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();

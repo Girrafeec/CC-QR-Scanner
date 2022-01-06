@@ -71,6 +71,9 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
         if (quickResponseCodeHistoryItemArrayList.get(currentPosition).getQrCodeType() == 3)
             setValidData(holder, currentPosition);
 
+        if (quickResponseCodeHistoryItemArrayList.get(currentPosition).getQrCodeType() == 4)
+            setCertificateDoesNotExistData(holder, currentPosition);
+
         // set time
         if (String.valueOf(quickResponseCodeHistoryItemArrayList.get(currentPosition).getTime().getMinute()).length() == 1)
             holder.scannedTime.setText(quickResponseCodeHistoryItemArrayList.get(currentPosition).getTime().getHour()
@@ -191,6 +194,28 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
             holder.itemCertEnPassport.setText("Загранпаспорт: " + quickResponseCodeHistoryItemArrayList.get(currentPosition).getEnPassport());
     }
 
+    // procedure to set expanded info of qr history item for certificate that does not exist
+    private void setCertificateDoesNotExistData(ViewHolder holder, int currentPosition){
+        holder.scannedStatus.setText("Сертификат не найден");
+        holder.itemStatus.setText("Статус: " + "Сертификат не найден");
+        holder.statusImg.setImageResource(R.drawable.ic__891023_cancel_cercle_close_delete_dismiss_icon);
+
+        holder.itemStatus.setVisibility(View.VISIBLE);
+        holder.itemUrl.setVisibility(View.GONE);
+        holder.itemContent.setVisibility(View.GONE);
+        holder.itemCertType.setVisibility(View.GONE);
+        holder.itemCertStatus.setVisibility(View.GONE);
+        holder.itemCertId.setVisibility(View.GONE);
+        holder.itemCertExpiredAt.setVisibility(View.GONE);
+        holder.itemCertFio.setVisibility(View.GONE);
+        holder.itemCertEnFio.setVisibility(View.GONE);
+        holder.itemCertPassport.setVisibility(View.GONE);
+        holder.itemCertEnPassport.setVisibility(View.GONE);
+        holder.itemCertRecoveryDate.setVisibility(View.GONE);
+        holder.itemCertBirthDate.setVisibility(View.GONE);
+        holder.itemCertValidTime.setVisibility(View.GONE);
+    }
+
     @Override
     public int getItemCount() {
         return quickResponseCodeHistoryItemArrayList.size();
@@ -241,7 +266,6 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
 
             scannedStatus.setSelected(true); // auto-scroll of scanned status message
 
-            //TODO исправить нажатие по-правильному
             expandItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
