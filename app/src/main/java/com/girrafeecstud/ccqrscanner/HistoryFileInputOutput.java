@@ -97,7 +97,7 @@ public class HistoryFileInputOutput {
 
         String str = "[" + qrCodeType + "]" + "\t" + "[" + certificateReuse + "]" + "\t" + "[" + type + "]" + "\t" + "[" + title + "]" + "\t"
                 + "[" + status + "]" + "\t" + "[" + certificateId + "]" + "\t" + "[" + expiredAt + "]" + "\t" + "[" + validFrom + "]" + "\t"
-                + "[+" + isBeforeValidFrom + "]" + "\t" + "[" + fio + "]" + "\t" + "[" + enFio + "]" + "\t" + "[" + recoveryDate + "]" + "\t"
+                + "[" + isBeforeValidFrom + "]" + "\t" + "[" + fio + "]" + "\t" + "[" + enFio + "]" + "\t" + "[" + recoveryDate + "]" + "\t"
                 + "[" + passport + "]" + "\t" + "[" + enPassport + "]" + "\t" + "[" + birthDate + "]" + "\t" + "[" + currentTime + "]";
 
         FileOutputStream fileOutputStream = null;

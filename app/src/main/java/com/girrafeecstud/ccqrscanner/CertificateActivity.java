@@ -45,7 +45,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     private LinearLayout error, certificateBackground, recoveryDateLinLay, validFromLinLay, expiredAtLinLay;
     private Button tryToConnectNetworkAgain;
 
-    private TextView jsonStatusTxt;
+    private TextView jsonStatusTxt, loadTimeTxt;
 
     private TextView titleTxt, statusTxt, certificateIdTxt, recoveryDateTxt, expiredAtTxt
             , fioTxt, passportTxt, enPasportTxt, birthDateTxt, validFromTxt;
@@ -76,6 +76,8 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     private boolean certificateReuse = false;
 
     private JSONObject jsonObject = new JSONObject();
+
+    Date httpStartTime, uiPrintedTime;
 
     private ParseCertificateJson parseCertificateJson;
 
@@ -179,6 +181,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
         scrollView = findViewById(R.id.certificateActivityScrollBar);
 
+        loadTimeTxt = findViewById(R.id.loadTimeTxt);
         jsonStatusTxt = findViewById(R.id.jsonSucceedTxt);
         birthDateTxt = findViewById(R.id.certificateBirthDateTxt);
         certificateIdTxt = findViewById(R.id.certificateIdTxt);
@@ -317,6 +320,12 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
             certificateBackground.setBackground(ContextCompat.getDrawable(this, R.drawable.green_rounded_recktangle));
         else
             certificateBackground.setBackground(ContextCompat.getDrawable(this, R.drawable.red_rounded_recktangle));
+
+        uiPrintedTime = Calendar.getInstance().getTime();
+        System.out.println(uiPrintedTime.getTime());
+        long diffInMilles = Math.abs(uiPrintedTime.getTime() - httpStartTime.getTime());
+        loadTimeTxt.setVisibility(View.VISIBLE);
+        loadTimeTxt.setText(String.valueOf(diffInMilles) + " ms");
     }
 
     // procedure to check if current certificate eas used earlier
@@ -444,6 +453,9 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
                 URL url = new URL(jsonUrl);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                // save time value when http connection starts
+                httpStartTime = Calendar.getInstance().getTime();
+                System.out.println(httpStartTime.getTime());
 
                 Log.i("connection json started", " ");
 
