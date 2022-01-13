@@ -77,7 +77,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
     private JSONObject jsonObject = new JSONObject();
 
-    Date httpStartTime, uiPrintedTime;
+    private Date httpStartTime, uiPrintedTime;
 
     private ParseCertificateJson parseCertificateJson;
 
@@ -200,8 +200,6 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
     private void checkInternetConnection(){
 
-        System.out.println(progressBar.getVisibility());
-
         if (!isConnectedToInternet()) {
             progressBar.setVisibility(View.GONE);
             error.setVisibility(View.VISIBLE);
@@ -322,7 +320,6 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
             certificateBackground.setBackground(ContextCompat.getDrawable(this, R.drawable.red_rounded_recktangle));
 
         uiPrintedTime = Calendar.getInstance().getTime();
-        System.out.println(uiPrintedTime.getTime());
         long diffInMilles = Math.abs(uiPrintedTime.getTime() - httpStartTime.getTime());
         loadTimeTxt.setVisibility(View.VISIBLE);
         loadTimeTxt.setText(String.valueOf(diffInMilles) + " ms");
@@ -455,9 +452,6 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 // save time value when http connection starts
                 httpStartTime = Calendar.getInstance().getTime();
-                System.out.println(httpStartTime.getTime());
-
-                Log.i("connection json started", " ");
 
                 InputStream inputStream = httpURLConnection.getInputStream();
 

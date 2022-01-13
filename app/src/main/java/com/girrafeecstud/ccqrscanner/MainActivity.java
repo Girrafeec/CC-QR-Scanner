@@ -12,18 +12,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.hardware.Camera;
-import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -213,7 +208,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (!quickResponseCodeURL.isURL(str)) {
             historyFileInputOutput.writeInvalidQrToFile(1, str, scanTime);
-            //Toast.makeText(this, "QR does not contain URL", Toast.LENGTH_SHORT).show();
             showNotSuccessScanResultAlertDialog(SCAN_RESULT_NOT_URL);
             return;
         }
@@ -232,9 +226,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void startCertificateActivity(String str){
         Intent intent = new Intent(MainActivity.this, CertificateActivity.class);
-
         intent.putExtra(EXTRA_SCAN_RESULT_VALID_URL, str);
         MainActivity.this.startActivity(intent);
+        /*
+        Intent intent = new Intent(MainActivity.this, WebPageCertificateActivity.class);
+        intent.putExtra(EXTRA_SCAN_RESULT_VALID_URL, str);
+        MainActivity.this.startActivity(intent);
+         */
     }
 
     // procedure to show alert dialog with info about not success result

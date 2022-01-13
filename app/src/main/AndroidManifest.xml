@@ -13,6 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CCQRScanner">
+        <activity
+            android:name=".WebPageCertificateActivity"
+            android:exported="true" />
         <activity android:name=".OrganizationProfileActivity" />
         <activity
             android:name=".QuickResponseCodeHistoryActivity"
@@ -28,7 +31,7 @@
         </activity>
         <activity
             android:name=".CertificateActivity"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
