@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -56,7 +55,7 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
     private Dialog reuseDialog;
 
-    private String certificateUrl = "", jsonString = "";
+    private String certificateUrl = "";
     private String type = "";
     private String title = "";
     private String status = "";
@@ -319,10 +318,10 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         else
             certificateBackground.setBackground(ContextCompat.getDrawable(this, R.drawable.red_rounded_recktangle));
 
-        uiPrintedTime = Calendar.getInstance().getTime();
-        long diffInMilles = Math.abs(uiPrintedTime.getTime() - httpStartTime.getTime());
-        loadTimeTxt.setVisibility(View.VISIBLE);
-        loadTimeTxt.setText(String.valueOf(diffInMilles) + " ms");
+        //uiPrintedTime = Calendar.getInstance().getTime();
+        //long diffInMilles = Math.abs(uiPrintedTime.getTime() - httpStartTime.getTime());
+        //loadTimeTxt.setVisibility(View.VISIBLE);
+        //loadTimeTxt.setText(String.valueOf(diffInMilles) + " ms");
     }
 
     // procedure to check if current certificate eas used earlier
@@ -414,19 +413,19 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
         public void fetch(){
 
             // 1 тип
-            //https://www.gosuslugi.ru/covid-cert/verify/9780000018577364?lang=ru&ck=8184f31948a5353cf9a0c28b7326d1c6 - url
-            //https://www.gosuslugi.ru/api/covid-cert/v3/cert/check/9780000018577364?lang=ru&ck=8184f31948a5353cf9a0c28b7326d1c6 - json of url
+            //https://www.gosuslugi.ru/covid-cert/verify/****************?lang=ru&ck=******************************** - url
+            //https://www.gosuslugi.ru/api/covid-cert/v3/cert/check/****************?lang=ru&ck=******************************** - json of url
 
-            //https://www.gosuslugi.ru/covid-cert/verify/8471082132567136?lang=ru&ck=feded94bb56d7c2580a314a6f4b472a4 - url
-            //https://www.gosuslugi.ru/api/covid-cert/v3/cert/check/8471082132567136?lang=ru&ck=feded94bb56d7c2580a314a6f4b472a4 - json of ilness
+            //https://www.gosuslugi.ru/covid-cert/verify/****************?lang=ru&ck=******************************** - url
+            //https://www.gosuslugi.ru/api/covid-cert/v3/cert/check/****************?lang=ru&ck=******************************** - json of ilness
 
             // 2 тип
-            //https://www.gosuslugi.ru/vaccine/cert/verify/0fcfc8a8-945d-4b2e-a6ab-691c3d6fd67d - url
-            //https://www.gosuslugi.ru/api/vaccine/v1/cert/verify/0fcfc8a8-945d-4b2e-a6ab-691c3d6fd67d - json of vacc from paper
+            //https://www.gosuslugi.ru/vaccine/cert/verify/************************************ - url
+            //https://www.gosuslugi.ru/api/vaccine/v1/cert/verify/************************************ - json of vacc from paper
 
             // 3 тип
-            //https://www.gosuslugi.ru/covid-cert/status/e4d9657a-48fe-477b-9777-c8053a2bdfc3?lang=ru - url
-            //https://www.gosuslugi.ru/api/covid-cert/v2/cert/status/e4d9657a-48fe-477b-9777-c8053a2bdfc3?lang=ru - json
+            //https://www.gosuslugi.ru/covid-cert/status/************************************?lang=ru - url
+            //https://www.gosuslugi.ru/api/covid-cert/v2/cert/status/************************************?lang=ru - json
 
             String[] urlElementsArray = websiteUrl.split("/");
 
@@ -443,9 +442,6 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
                 jsonUrl = ar.get(0) + "//" + ar.get(1) + "/api/" + ar.get(2) + "/v2/cert/status/" + ar.get(4);
             }
 
-            Log.i("json url: ", jsonUrl);
-
-            ///////////////////////connect to original url to get html code///////////////
             try {
 
                 URL url = new URL(jsonUrl);
@@ -465,7 +461,6 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
                 if (!data.isEmpty()){
                     jsonObject = new JSONObject(data);
-                    jsonString = jsonObject.toString();
                     jsonSucceeed = true;
                 }
 

@@ -289,9 +289,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        //String ert = historyFileInputOutput.readFile();
-        //Toast.makeText(this, ert, Toast.LENGTH_LONG).show();
-
     }
 
     private void showHelpDialog(){

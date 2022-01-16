@@ -1,8 +1,6 @@
 package com.girrafeecstud.ccqrscanner;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,7 +11,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.Date;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -35,9 +32,6 @@ public class HistoryFileInputOutput {
 
             try {
                 fos = context.openFileOutput(fileName, MODE_PRIVATE);
-                //Toast.makeText(context,
-                  //      "Created file  " + context.getFilesDir() + "/" + fileName, Toast.LENGTH_LONG).show();
-                //Log.i("here", context.getFilesDir() + "/" + fileName);
             } catch (FileNotFoundException exception) {
                 exception.printStackTrace();
             } catch (IOException exception) {
@@ -59,8 +53,6 @@ public class HistoryFileInputOutput {
         String history = readFile();
 
         String str = "[" + qrCodeType + "]" + "\t" + "[" + content + "]" + "\t" + "[" + currentTime + "]";
-
-        System.out.println("invalid str" + str);
 
         FileOutputStream fileOutputStream = null;
 
@@ -142,9 +134,6 @@ public class HistoryFileInputOutput {
             while ((text = br.readLine()) != null){
                 sb.append(text).append("\n");
             }
-
-            //Toast.makeText(context, sb.toString(), Toast.LENGTH_SHORT).show();
-            //Log.i("history", history);
 
             history = sb.toString();
 

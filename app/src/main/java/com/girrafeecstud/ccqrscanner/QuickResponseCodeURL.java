@@ -2,8 +2,6 @@ package com.girrafeecstud.ccqrscanner;
 
 import android.net.Uri;
 
-import java.net.URI;
-import java.util.List;
 import java.util.regex.Pattern;
 
 public class QuickResponseCodeURL {

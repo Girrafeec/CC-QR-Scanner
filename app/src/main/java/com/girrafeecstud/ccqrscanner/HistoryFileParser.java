@@ -1,11 +1,5 @@
 package com.girrafeecstud.ccqrscanner;
 
-import android.util.Log;
-
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -29,10 +23,6 @@ public class HistoryFileParser {
     public void convertHistoryToArrayList(String history){
 
         ArrayList<String> historyStrings = new ArrayList<>(Arrays.asList(history.split("\n\n")));
-
-        //Log.i("ar size", String.valueOf(historyStrings.size()));
-        for (int i=0; i<historyStrings.size();i++)
-          System.out.println(i + "  " + historyStrings.get(i));
 
         quickResponseCodeHistoryItemArrayList.clear();
 
@@ -81,8 +71,6 @@ public class HistoryFileParser {
     private void addValidContentToObject(String str){
 
         ArrayList<String> parsedQrScanResult = new ArrayList<>(Arrays.asList(str.split("\t")));
-
-        System.out.println(parsedQrScanResult);
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("E\\MMM\\d\\HH:mm:ss\\z\\yyyy", Locale.US);
         LocalDateTime date = LocalDateTime.parse(parsedQrScanResult.get(15), dtf);

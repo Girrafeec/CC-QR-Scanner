@@ -1,14 +1,11 @@
 package com.girrafeecstud.ccqrscanner;
 
 import android.content.Context;
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -161,7 +158,7 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
         holder.itemCertFio.setText("ФИО: " + quickResponseCodeHistoryItemArrayList.get(currentPosition).getFio());
         holder.itemCertEnFio.setText("ФИО (English): " + quickResponseCodeHistoryItemArrayList.get(currentPosition).getEnFio());
         holder.itemCertPassport.setText("Паспорт: " + quickResponseCodeHistoryItemArrayList.get(currentPosition).getPassport());
-        holder.itemCertBirthDate.setText("Дата рождени: " + quickResponseCodeHistoryItemArrayList.get(currentPosition).getBirthDate());
+        holder.itemCertBirthDate.setText("Дата рождения: " + quickResponseCodeHistoryItemArrayList.get(currentPosition).getBirthDate());
 
         holder.itemStatus.setVisibility(View.VISIBLE);
         holder.itemContent.setVisibility(View.GONE);

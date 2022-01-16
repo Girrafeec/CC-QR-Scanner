@@ -3,10 +3,26 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1925925925925926" />
         <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/bottom_nav_text_color.xml" value="0.21666666666666667" />
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/green_rounded_recktangle.xml" value="0.1925925925925926" />
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/ic__26633_error_icon.xml" value="0.1925925925925926" />
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/ic__930264_check_complete_done_green_success_icon.xml" value="0.1925925925925926" />
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/ic_baseline_arrow_drop_down_24.xml" value="0.1925925925925926" />
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/ic_baseline_arrow_drop_up_24.xml" value="0.1925925925925926" />
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/ic_baseline_calendar_today_24.xml" value="0.1925925925925926" />
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/ic_baseline_clear_history.xml" value="0.1925925925925926" />
         <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/ic_baseline_qr_code_scanner.xml" value="0.21296296296296297" />
         <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/ic_baseline_qr_code_scanner_background.xml" value="0.20555555555555555" />
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/ic_outline_account_box.xml" value="0.1925925925925926" />
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/ic_outline_account_box_background.xml" value="0.1925925925925926" />
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/ic_outline_help_outline.xml" value="0.1925925925925926" />
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/ic_outline_history_edu.xml" value="0.1925925925925926" />
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/oval_text_white_background.xml" value="0.1925925925925926" />
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/red_rounded_recktangle.xml" value="0.1925925925925926" />
         <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/toolbar_dropshadow.xml" value="0.21666666666666667" />
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/white_circle.xml" value="0.1925925925925926" />
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/drawable/white_rounded_recktangle.xml" value="0.1925925925925926" />
         <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/layout/activity_certificate.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/layout/activity_history_settings.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
@@ -18,6 +34,7 @@
         <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/layout/quick_response_code_history_item.xml" value="0.33" />
         <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/menu/botton_navigation_menu.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/menu/qr_history_action_bar_menu.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/1/Desktop/Android Projects/CC-QR-Scanner/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1125" />
         <entry key="..\:/Users/1/Desktop/Android Projects/CCQRScanner/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/1/Desktop/Android Projects/CCQRScanner/app/src/main/res/layout/activity_quick_responce_code_history.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/1/Desktop/Android Projects/CCQRScanner/app/src/main/res/layout/quick_response_code_history_item.xml" value="0.20416666666666666" />

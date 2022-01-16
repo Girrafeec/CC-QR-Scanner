@@ -1,11 +1,10 @@
 package com.girrafeecstud.ccqrscanner;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class QuickResponseCodeHistoryItem {
 
-    private int qrCodeType = 0; // 1 - not url; 2 - not valid url; 3 - certificate url
+    private int qrCodeType = 0; // 1 - not url; 2 - not valid url; 3 - certificate url; 4 - certificate does not exist
     private boolean certificateReuse = false;
     private boolean itemInfoVisibility = false;
     private String content = "";
