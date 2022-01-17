@@ -140,9 +140,23 @@ public class QuickResponseCodeHistoryRecViewAdapter extends RecyclerView.Adapter
             holder.statusImg.setImageResource(R.drawable.ic__930264_check_complete_done_green_success_icon);
         }
         else {
-            holder.scannedStatus.setText("Сертификат устарел/не действителен");
-            holder.itemStatus.setText("Статус " + "Сертификат временный/устарел/не действителен");
-            holder.statusImg.setImageResource(R.drawable.ic__891023_cancel_cercle_close_delete_dismiss_icon);
+            if(quickResponseCodeHistoryItemArrayList.get(currentPosition).getType().equals("ПЦР-тест")
+                    && quickResponseCodeHistoryItemArrayList.get(currentPosition).getStatus().equals("Положительный")) {
+                holder.scannedStatus.setText("Положительный ПЦР-тест");
+                holder.itemStatus.setText("Статус " + "Положительный ПЦР-тест");
+                holder.statusImg.setImageResource(R.drawable.ic__891023_cancel_cercle_close_delete_dismiss_icon);
+            }
+            else if (quickResponseCodeHistoryItemArrayList.get(currentPosition).getType().equals("ПЦР-тест")
+                    && quickResponseCodeHistoryItemArrayList.get(currentPosition).getStatus().equals("Отрицательный")){
+                holder.scannedStatus.setText("Отрицательный ПЦР-тест");
+                holder.itemStatus.setText("Статус " + "Отрицательный ПЦР-тест");
+                holder.statusImg.setImageResource(R.drawable.ic__930264_check_complete_done_green_success_icon);
+            }
+            else {
+                holder.scannedStatus.setText("Сертификат устарел/не действителен");
+                holder.itemStatus.setText("Статус " + "Сертификат временный/устарел/не действителен");
+                holder.statusImg.setImageResource(R.drawable.ic__891023_cancel_cercle_close_delete_dismiss_icon);
+            }
         }
         if (quickResponseCodeHistoryItemArrayList.get(currentPosition).isCertificateReuse() == true
                 && !quickResponseCodeHistoryItemArrayList.get(currentPosition).getStatus().equals("Не действителен")){

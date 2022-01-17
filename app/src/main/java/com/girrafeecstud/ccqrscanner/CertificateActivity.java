@@ -241,10 +241,11 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
             validFrom = parseCertificateJson.getValidFrom();
             isBeforeValidFrom = parseCertificateJson.getIsBeforeValidFrom();
 
-            if (status.equals("1") || (status.equals("OK") && !isBeforeValidFrom.equals("true")))
-                status = "Действителен";
-            else
-                status = "Не действителен";
+            if (!type.equals("COVID_TEST"))
+                if (status.equals("1") || (status.equals("OK") && !isBeforeValidFrom.equals("true")))
+                    status = "Действителен";
+                else
+                    status = "Не действителен";
 
             if (title.isEmpty() && type.isEmpty() && !stuff.isEmpty()) {
                 title = "Сертификат вакцинации от COVID-19";
