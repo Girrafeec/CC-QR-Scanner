@@ -34,6 +34,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -328,6 +329,9 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
     // procedure to check if current certificate eas used earlier
     private void checkPotentialCertificateReuse(){
 
+        Date currentTime = Calendar.getInstance().getTime();
+        long diffInMilles = 0;
+
         String history = historyFileInputOutput.readFile();
 
         if (!history.isEmpty()) {
@@ -335,7 +339,11 @@ public class CertificateActivity extends AppCompatActivity implements View.OnCli
 
             for (int i = 0; i < historyFileParser.getQuickResponseCodeHistoryItemArrayList().size(); i++) {
 
-                if (historyFileParser.getQuickResponseCodeHistoryItemArrayList().get(i).getQrCodeType() == 3 &&
+                // count difference between current time and scanned certificate time
+                diffInMilles = Math.abs(currentTime.getTime() - Date.from(historyFileParser.getQuickResponseCodeHistoryItemArrayList().get(i).getTime().atZone(ZoneId.systemDefault()).toInstant()).getTime());
+
+                if (diffInMilles < 43200000 &&
+                        historyFileParser.getQuickResponseCodeHistoryItemArrayList().get(i).getQrCodeType() == 3 &&
                         historyFileParser.getQuickResponseCodeHistoryItemArrayList().get(i).getCertificateId().equals(certificateId) &&
                         historyFileParser.getQuickResponseCodeHistoryItemArrayList().get(i).getStatus().equals("Действителен")) {
                     certificateReuse = true;

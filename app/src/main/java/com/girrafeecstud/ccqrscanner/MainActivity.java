@@ -228,11 +228,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(MainActivity.this, CertificateActivity.class);
         intent.putExtra(EXTRA_SCAN_RESULT_VALID_URL, str);
         MainActivity.this.startActivity(intent);
+
         /*
         Intent intent = new Intent(MainActivity.this, WebPageCertificateActivity.class);
         intent.putExtra(EXTRA_SCAN_RESULT_VALID_URL, str);
         MainActivity.this.startActivity(intent);
-         */
+        */
     }
 
     // procedure to show alert dialog with info about not success result
